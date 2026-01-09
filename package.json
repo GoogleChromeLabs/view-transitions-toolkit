@@ -1,0 +1,76 @@
+{
+    "name": "view-transitions-toolkit",
+    "version": "0.0.1",
+    "description": "A collection of utility functions to more easily work with View Transitions",
+    "type": "module",
+	"exports": {
+		"./active-tracker": {
+			"types": "./dist/active-tracker.d.ts",
+			"import": "./dist/active-tracker.js"
+		},
+		"./auto-navigation-types": {
+			"types": "./dist/auto-navigation-types.d.ts",
+			"import": "./dist/auto-navigation-types.js"
+		},
+		"./extract-animations": {
+			"types": "./dist/extract-animations.d.ts",
+			"import": "./dist/extract-animations.js"
+		},
+		"./measure": {
+			"types": "./dist/measure.d.ts",
+			"import": "./dist/measure.js"
+		},
+		"./optimize": {
+			"types": "./dist/optimize.d.ts",
+			"import": "./dist/optimize.js"
+		},
+		"./play-pause-scrub": {
+			"types": "./dist/play-pause-scrub.d.ts",
+			"import": "./dist/play-pause-scrub.js"
+		},
+		"./temp-names": {
+			"types": "./dist/temp-names.d.ts",
+			"import": "./dist/temp-names.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+    "scripts": {
+        "lint": "prettier --check '{src,test,demo}/**/*.{ts,tsx,js,jsx}'",
+        "format": "prettier --write '{src,test,demo}/**/*.{ts,tsx,js,jsx}'",
+        "prebuild": "rm -rf ./dist",
+        "build": "tsc",
+        "dev": "echo \"TODO\" && exit 1",
+        "prepack": "npm run require-license-headers && npm run require-pristine-tree && npm run test",
+        "prepublish": "npm run build",
+        "pretest": "npm run build",
+        "test": "echo \"No tests specified\"",
+        "preversion": "npm run require-license-headers && npm run require-pristine-tree && npm run test",
+        "require-license-headers": "addlicense -check -f=./LICENSE .",
+        "require-pristine-tree": "exit $(git status --porcelain | wc -l)",
+        "add-license-headers": "addlicense -c 'Google LLC' -l apache -s=only -f=./LICENSE ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/GoogleChromeLabs/view-transitions-toolkit.git"
+    },
+    "keywords": [
+        "css",
+        "view-transitions"
+    ],
+    "author": {
+        "name": "Bramus",
+        "email": "bramus@bram.us",
+        "url": "https://www.bram.us/"
+    },
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/GoogleChromeLabs/view-transitions-toolkit/issues"
+    },
+    "homepage": "https://github.com/GoogleChromeLabs/view-transitions-toolkit#readme",
+    "devDependencies": {
+        "typescript": "^5.7.2",
+        "prettier": "^3.4.1"
+    }
+}
