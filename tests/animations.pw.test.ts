@@ -72,4 +72,41 @@ test.describe("Extract Animations", () => {
     expect(numAnimationsForElements.all).toBe(numAnimationsForOneElement * 4);
     expect(numAnimationsForElements.root).toBe(numAnimationsForOneElement);
   });
+
+  test("getAnimations should throw for an invalid identifier", async ({
+    page,
+  }) => {
+    // Go to the page with only the root participating in the VT
+    await page.goto("http://localhost:7357/tests/rootonly.html");
+
+    // Start a VT and try to get animations with invalid identifiers
+    const result = await page.evaluate(async () => {
+      const { getAnimations } = await import("/dist/extract-animations.js");
+
+      const t = document.startViewTransition(() => {});
+      await t.ready;
+
+      const errors: { identifier: string; message: string }[] = [];
+      const identifiersToTest = ["123", "", "initial", "--foo"];
+
+      for (const identifier of identifiersToTest) {
+        try {
+          // @ts-expect-error
+          getAnimations(t, identifier);
+        } catch (e: any) {
+          errors.push({ identifier, message: e.message });
+        }
+      }
+
+      return errors;
+    });
+
+    expect(result).toHaveLength(2);
+    expect(result[0].identifier).toBe("123");
+    expect(result[0].message).toBe(
+      `'123' is not a valid view-transition-name.`,
+    );
+    expect(result[1].identifier).toBe("");
+    expect(result[1].message).toBe(`'' is not a valid view-transition-name.`);
+  });
 });

@@ -34,7 +34,7 @@ export function getAnimations(
   part: ViewTransitionPart | null = null,
 ): CSSAnimation[] {
   // 1. Check if we have already cached the animations for this specific ViewTransition
-  let animations = animationsCache.get(vt);
+  let animations = animationsCache.has(vt) ? animationsCache.get(vt) : null;
 
   // 2. If not in cache, perform the expensive DOM lookup
   if (!animations) {
@@ -71,6 +71,12 @@ export function getAnimations(
   // 3. Perform the cheap filter based on the identifier argument
   // This runs against the cached array, not the document
   if (identifier !== "*") {
+    if (!CSS.supports("view-transition-name", identifier)) {
+      throw new DOMException(
+        `'${identifier}' is not a valid view-transition-name.`,
+      );
+    }
+
     filteredAnimations = filteredAnimations.filter((anim) => {
       // We know effect is KeyframeEffect from the cache step
       const effect = anim.effect as KeyframeEffect;
@@ -114,28 +120,3 @@ export function getAnimation(
     return undefined;
   }
 }
-
-/*
-// Assuming a view transition is currently running
-const transition = document.startViewTransition(() => {
-  // DOM update logic
-});
-
-await transition.ready;
-
-// Get ALL view transition animations
-const allVtAnimations = getAnimations(transition);
-
-// Get animations specifically for the "header" area
-// (Assuming you have CSS: view-transition-name: header;)
-const headerAnimations = getAnimations(transition, "header");
-
-// Get card old animation
-const cardExitAnim = getAnimation(
-  transition, 
-  "card", 
-  ViewTransitionPart.Old
-);
-
-console.log(headerAnimations, cardExitAnim);
-*/
