@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// 1. Type Definitions for Cross-Document Events
+// Type Definitions for Cross-Document Events
 // These might not be in standard TypeScript lib files yet.
 interface PageSwapEvent extends Event {
   viewTransition?: ViewTransition | null;
@@ -26,7 +26,7 @@ declare global {
 type ActiveTransitionSetter = (vt: ViewTransition) => void;
 
 /**
- * PART A: Logic for Same-Document View Transitions (SPA).
+ * Logic for Same-Document View Transitions (SPA).
  * Intercepts document.startViewTransition to capture the returned object.
  */
 function shimSameDocument(setActiveTransition: ActiveTransitionSetter) {
@@ -49,7 +49,7 @@ function shimSameDocument(setActiveTransition: ActiveTransitionSetter) {
 }
 
 /**
- * PART B: Logic for Cross-Document View Transitions (MPA).
+ * Logic for Cross-Document View Transitions (MPA).
  * Listens for pageswap (outgoing) and pagereveal (incoming) events.
  */
 function shimCrossDocument(setActiveTransition: ActiveTransitionSetter) {
@@ -72,10 +72,12 @@ function shimCrossDocument(setActiveTransition: ActiveTransitionSetter) {
 }
 
 /**
- * PART C: Main Installation Function.
+ * Main Installation Function.
  * Sets up the activeViewTransition property and initializes both shims.
  */
 export function installActiveViewTransitionShim(): void {
+  // @TODO: Figure out how this stacks against the native implementation …
+
   // 1. Abort if the feature is not supported at all
   // (We need at least basic View Transition support to track anything)
   if (!("startViewTransition" in document)) {
@@ -118,8 +120,3 @@ export function installActiveViewTransitionShim(): void {
   shimSameDocument(handleNewTransition);
   shimCrossDocument(handleNewTransition);
 }
-
-/*
-import { installActiveViewTransitionShim } from './viewTransitionUtils';
-installActiveViewTransitionShim();
-*/
