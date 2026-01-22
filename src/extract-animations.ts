@@ -97,26 +97,3 @@ export function getAnimations(
 
   return filteredAnimations;
 }
-
-/**
- * Retrieves a single specific CSSAnimation for a given View Transition identifier and part.
- * Builds on top of getAnimations().
- * * @param vt - The ViewTransition instance.
- * @param identifier - The view-transition-name (e.g., "header", "root").
- * @param part - The specific pseudo-element part (e.g., Old, New, Group).
- * @returns The matching CSSAnimation or undefined if not found.
- */
-export function getAnimation(
-  vt: ViewTransition,
-  identifier: string,
-  part: ViewTransitionPart,
-): CSSAnimation | undefined {
-  // 1. Get all animations for this specific identifier
-  const animations = getAnimations(vt, identifier, part);
-
-  if (animations.length === 1) {
-    return animations[0];
-  } else {
-    return undefined;
-  }
-}
