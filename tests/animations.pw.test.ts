@@ -8,7 +8,7 @@ import { test, expect, type Page } from "@playwright/test";
 test.describe("Extract Animations", () => {
   test("getAnimations should only get the VT animations", async ({ page }) => {
     // Go to the page with only the root participating in the VT
-    await page.goto("http://localhost:7357/tests/rootonly.html");
+    await page.goto("http://localhost:7357/tests/spa/rootonly.html");
 
     // Start a VT and get some numbers
     const result = await page.evaluate(async () => {
@@ -39,7 +39,7 @@ test.describe("Extract Animations", () => {
     page,
   }) => {
     // Go to the page with only the root participating in the VT
-    await page.goto("http://localhost:7357/tests/rootonly.html");
+    await page.goto("http://localhost:7357/tests/spa/rootonly.html");
 
     // Find out how many animations the browser creates per VT pseudo
     // @note: this is (currently) 5, but that might change over time …
@@ -54,7 +54,7 @@ test.describe("Extract Animations", () => {
     });
 
     // Go to the page with 3 boxes + root participating
-    await page.goto("http://localhost:7357/tests/boxes.html");
+    await page.goto("http://localhost:7357/tests/spa/boxes.html");
 
     // Start a VT and get the number
     const numAnimationsForElements = await page.evaluate(async () => {
@@ -77,7 +77,7 @@ test.describe("Extract Animations", () => {
     page,
   }) => {
     // Go to the page with only the root participating in the VT
-    await page.goto("http://localhost:7357/tests/rootonly.html");
+    await page.goto("http://localhost:7357/tests/spa/rootonly.html");
 
     // Start a VT and try to get animations with invalid identifiers
     const result = await page.evaluate(async () => {
@@ -114,7 +114,7 @@ test.describe("Extract Animations", () => {
     page,
   }) => {
     // Go to the page with 3 boxes + root participating
-    await page.goto("http://localhost:7357/tests/boxes.html");
+    await page.goto("http://localhost:7357/tests/spa/boxes.html");
 
     // Start a VT and get the number of animations
     const result = await page.evaluate(async () => {
