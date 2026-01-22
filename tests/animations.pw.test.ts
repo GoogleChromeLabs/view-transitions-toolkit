@@ -109,4 +109,92 @@ test.describe("Extract Animations", () => {
     expect(result[1].identifier).toBe("");
     expect(result[1].message).toBe(`'' is not a valid view-transition-name.`);
   });
+
+  test("getAnimations should be able to filter using a part", async ({
+    page,
+  }) => {
+    // Go to the page with 3 boxes + root participating
+    await page.goto("http://localhost:7357/tests/boxes.html");
+
+    // Start a VT and get the number of animations
+    const result = await page.evaluate(async () => {
+      const { getAnimations, ViewTransitionPart } =
+        await import("/dist/extract-animations.js");
+
+      const t = document.startViewTransition(() => {});
+      await t.ready;
+
+      const aOldSingleElement = getAnimations(
+        t,
+        "box1",
+        ViewTransitionPart.Old,
+      );
+      const aNewSingleElement = getAnimations(
+        t,
+        "box1",
+        ViewTransitionPart.New,
+      );
+      const aGroupSingleElement = getAnimations(
+        t,
+        "box1",
+        ViewTransitionPart.Group,
+      );
+      const aImagePairSingleElement = getAnimations(
+        t,
+        "box1",
+        ViewTransitionPart.ImagePair,
+      );
+
+      const aAllSingleElement = getAnimations(t, "box1");
+
+      const aOldAllElements = getAnimations(t, "*", ViewTransitionPart.Old);
+      const aNewAllElements = getAnimations(t, "*", ViewTransitionPart.New);
+      const aGroupBoxAllElements = getAnimations(
+        t,
+        "*",
+        ViewTransitionPart.Group,
+      );
+      const aImagePairAllElements = getAnimations(
+        t,
+        "*",
+        ViewTransitionPart.ImagePair,
+      );
+
+      return {
+        aOldSingleElement,
+        aNewSingleElement,
+        aGroupSingleElement,
+        aImagePairSingleElement,
+        aAllSingleElement,
+        aOldAllElements,
+        aNewAllElements,
+        aGroupBoxAllElements,
+        aImagePairAllElements,
+      };
+    });
+
+    // The total number of animations on a single captured element
+    // should match the count of its individual parts
+    expect(result.aAllSingleElement.length).toBe(
+      result.aOldSingleElement.length +
+        result.aNewSingleElement.length +
+        result.aGroupSingleElement.length +
+        result.aImagePairSingleElement.length,
+    );
+
+    // There are 4 elements on the page, so the numbers should be 4 times greater
+    // than the individual element’s pseudo animations
+    expect(result.aOldAllElements.length).toBe(
+      result.aOldSingleElement.length * 4,
+    );
+    expect(result.aNewAllElements.length).toBe(
+      result.aNewSingleElement.length * 4,
+    );
+    expect(result.aGroupBoxAllElements.length).toBe(
+      result.aGroupSingleElement.length * 4,
+    );
+    expect(result.aImagePairAllElements.length).toBe(
+      result.aImagePairSingleElement.length * 4,
+    );
+  });
 });
