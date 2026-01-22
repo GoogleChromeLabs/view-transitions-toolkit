@@ -1,2 +1,6 @@
 /dist
 /node_modules
+!/demo/js/.gitkeep
+/demo/js
+/test-results
+/custom-browsers
