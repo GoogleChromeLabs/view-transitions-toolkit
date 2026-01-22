@@ -41,11 +41,11 @@ export function getAnimations(
     const vtModern = vt as ViewTransitionWithRoot;
     let allAnimations: Animation[];
 
-    // Modern approach: Scoped View Transitions
+    // Modern approach: Get it from the transitionRoot
     if (vtModern.transitionRoot) {
       allAnimations = vtModern.transitionRoot.getAnimations({ subtree: true });
     }
-    // Fallback: Global View Transitions
+    // Fallback: Read it from the document
     else {
       allAnimations = document.getAnimations();
     }
@@ -57,8 +57,14 @@ export function getAnimations(
       const effect = anim.effect;
       if (!(effect instanceof KeyframeEffect)) return false;
 
+      // The animation must be linked to the transitionRoot
+      const transitionRoot =
+        vtModern.transitionRoot ?? document.documentElement;
+      const isLinkedToTransitionRoot = effect.target === transitionRoot;
+      if (!isLinkedToTransitionRoot) return false;
+
+      // The animation must be linked to a pseudo whose name starts with ::view-transition
       const pseudo = effect.pseudoElement;
-      // We only care about pseudo-elements starting with ::view-transition
       return !!(pseudo && pseudo.startsWith("::view-transition"));
     });
 
