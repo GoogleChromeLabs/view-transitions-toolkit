@@ -11,6 +11,7 @@ const animationsCache = new WeakMap<ViewTransition, CSSAnimation[]>();
  */
 export enum ViewTransitionPart {
   Group = "::view-transition-group",
+  GroupChildren = "::view-transition-group-children",
   ImagePair = "::view-transition-image-pair",
   Old = "::view-transition-old",
   New = "::view-transition-new",

@@ -144,6 +144,11 @@ test.describe("Extract Animations", () => {
         "box1",
         ViewTransitionPart.ImagePair,
       );
+      const aGroupChildrenSingleElement = getAnimations(
+        t,
+        "box1",
+        ViewTransitionPart.GroupChildren,
+      );
 
       const aAllSingleElement = getAnimations(t, "box1");
 
@@ -159,17 +164,24 @@ test.describe("Extract Animations", () => {
         "*",
         ViewTransitionPart.ImagePair,
       );
+      const aGroupChildrenAllElements = getAnimations(
+        t,
+        "*",
+        ViewTransitionPart.GroupChildren,
+      );
 
       return {
         aOldSingleElement,
         aNewSingleElement,
         aGroupSingleElement,
         aImagePairSingleElement,
+        aGroupChildrenSingleElement,
         aAllSingleElement,
         aOldAllElements,
         aNewAllElements,
         aGroupBoxAllElements,
         aImagePairAllElements,
+        aGroupChildrenAllElements,
       };
     });
 
@@ -179,7 +191,8 @@ test.describe("Extract Animations", () => {
       result.aOldSingleElement.length +
         result.aNewSingleElement.length +
         result.aGroupSingleElement.length +
-        result.aImagePairSingleElement.length,
+        result.aImagePairSingleElement.length +
+        result.aGroupChildrenSingleElement.length,
     );
 
     // There are 4 elements on the page, so the numbers should be 4 times greater
@@ -195,6 +208,9 @@ test.describe("Extract Animations", () => {
     );
     expect(result.aImagePairAllElements.length).toBe(
       result.aImagePairSingleElement.length * 4,
+    );
+    expect(result.aGroupChildrenAllElements.length).toBe(
+      result.aGroupChildrenSingleElement.length * 4,
     );
   });
 });
