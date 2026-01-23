@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+ Copyright 2026 Google LLC
+ SPDX-License-Identifier: Apache-2.0
+-->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <style>
+      @view-transition {
+        navigation: auto;
+      }
+    </style>
+    <script>
+      window.addEventListener("pageswap", (e) => {
+        if (e.viewTransition) {
+          window.trackActiveViewTransition(e.viewTransition);
+        }
+      });
+      window.addEventListener("pagereveal", (e) => {
+        if (e.viewTransition) {
+          window.trackActiveViewTransition(e.viewTransition);
+        }
+      });
+    </script>
+    <script type="module" blocking="render">
+      import { setupActiveViewTransitionTracking } from "/dist/active-tracker.js";
+      setupActiveViewTransitionTracking('cross-document');
+    </script>
+    <script type="module">
+      window.nativeCrossDocumentViewtransitionSupport = "CSSViewTransitionRule" in window;
+      window.nativeActiveViewTransitionSupport = "activeViewTransition" in Document.prototype;
+      window.thereWasAViewTransitionDuringPageReveal = false;
+      window.thereWasAnActiveViewTransitionDuringPageReveal = false;
+      window.theViewTransitionDuringPageRevealMatchedTheActiveViewTransition = false;
+
+      window.addEventListener("pagereveal", (e) => {
+        if (e.viewTransition) {
+          window.thereWasAViewTransitionDuringPageReveal = true;
+          window.thereWasAnActiveViewTransitionDuringPageReveal = e.viewTransition !== null;
+          window.theViewTransitionDuringPageRevealMatchedTheActiveViewTransition = 
+            e.viewTransition === document.activeViewTransition;
+        }
+        console.log({
+          nativeCrossDocumentViewtransitionSupport,
+          nativeActiveViewTransitionSupport,
+          thereWasAViewTransitionDuringPageReveal,
+          thereWasAnActiveViewTransitionDuringPageReveal,
+          theViewTransitionDuringPageRevealMatchedTheActiveViewTransition,
+        });
+      });
+    </script>
+</head>
+<body>
+  <a href="index2.html">To Page 2</a>
+</body>
+</html>

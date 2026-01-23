@@ -3,106 +3,78 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// Type Definitions for Cross-Document Events
-// These might not be in standard TypeScript lib files yet.
-interface PageSwapEvent extends Event {
-  viewTransition?: ViewTransition | null;
-}
-
-interface PageRevealEvent extends Event {
-  viewTransition?: ViewTransition | null;
-}
-
-declare global {
-  interface WindowEventMap {
-    pageswap: PageSwapEvent;
-    pagereveal: PageRevealEvent;
-  }
-}
-
 /**
  * Type for the state setter function used internally by the shims.
  */
 type ActiveTransitionSetter = (vt: ViewTransition) => void;
+
+import { supports } from "./feature-detection.js";
 
 /**
  * Logic for Same-Document View Transitions (SPA).
  * Intercepts document.startViewTransition to capture the returned object.
  */
 function shimSameDocument(setActiveTransition: ActiveTransitionSetter) {
-  // Guard: If startViewTransition doesn't exist, we can't shim anything.
-  if (!("startViewTransition" in document)) return;
+  // Abort if Same-Document View Transitions are not supported at all
+  if (!supports.sameDocument) {
+    return;
+  }
 
+  // Grab the original document.startViewTransition
   const nativeStartViewTransition = document.startViewTransition.bind(document);
 
+  // Overwrite document.startViewTransition with a version that keeps track of the VT
   document.startViewTransition = function (
     callbackOrOptions?: any,
   ): ViewTransition {
-    // 1. Call native
     const vt = nativeStartViewTransition(callbackOrOptions);
-
-    // 2. Update state
     setActiveTransition(vt);
-
     return vt;
   };
 }
 
-/**
- * Logic for Cross-Document View Transitions (MPA).
- * Listens for pageswap (outgoing) and pagereveal (incoming) events.
- */
-function shimCrossDocument(setActiveTransition: ActiveTransitionSetter) {
-  // Guard: SSR safety
-  if (typeof window === "undefined") return;
+const shimCrossDocument = (
+  setActiveTransition: ActiveTransitionSetter,
+): ActiveTransitionSetter | void => {
+  // Abort if Cross-Document View Transitions are not supported at all
+  if (!supports.crossDocument) return;
 
-  // 1. Listen for Outgoing (Page Swap)
-  window.addEventListener("pageswap", (e: PageSwapEvent) => {
-    if (e.viewTransition) {
-      setActiveTransition(e.viewTransition);
-    }
-  });
+  // Just return the setActiveTransition which the author needs to apply themselves
+  return setActiveTransition;
+};
 
-  // 2. Listen for Incoming (Page Reveal)
-  window.addEventListener("pagereveal", (e: PageRevealEvent) => {
-    if (e.viewTransition) {
-      setActiveTransition(e.viewTransition);
-    }
-  });
-}
+const setupActiveViewTransitionTracking = (
+  mode?: string,
+): ActiveTransitionSetter | void => {
+  // No mode passed into this? Default to both
+  if (mode === undefined) mode = "both";
 
-/**
- * Main Installation Function.
- * Sets up the activeViewTransition property and initializes both shims.
- */
-export function installActiveViewTransitionShim(): void {
-  // @TODO: Figure out how this stacks against the native implementation …
-
-  // 1. Abort if the feature is not supported at all
-  // (We need at least basic View Transition support to track anything)
-  if (!("startViewTransition" in document)) {
+  // Abort if mode is incorrect
+  if (!["same-document", "cross-document", "both"].includes(mode)) {
+    console.warn(
+      'Tried to register the document.activeViewTransition tracker with an incorrect mode. Allowed modes are "same-document" or "cross-document". If you want both, leave the mode empty',
+    );
     return;
   }
 
-  // 2. Abort if fully supported natively
+  // Abort if document.activeViewTransition is already supported
   // If the browser already has the activeViewTransition property, we don't need to interfere.
-  if ("activeViewTransition" in Document.prototype) {
+  if (supports.activeViewTransition) {
     return;
   }
 
-  // 3. Centralized State Management
+  // The activeViewTransition
   let activeTransition: ViewTransition | null = null;
 
-  // 4. Define the property on the document
+  // Expose document.activeViewTransition
   Object.defineProperty(document, "activeViewTransition", {
     get: () => activeTransition,
     configurable: true,
     enumerable: true,
   });
 
-  // 5. Create the Setter/Cleanup Logic
   // This function is passed to the sub-shims so they can update the central state.
-  const handleNewTransition: ActiveTransitionSetter = (vt: ViewTransition) => {
+  const setActiveTransition: ActiveTransitionSetter = (vt: ViewTransition) => {
     activeTransition = vt;
 
     // Auto-cleanup: When the transition finishes, clear the active state.
@@ -116,7 +88,19 @@ export function installActiveViewTransitionShim(): void {
     });
   };
 
-  // 6. Initialize both subsystems
-  shimSameDocument(handleNewTransition);
-  shimCrossDocument(handleNewTransition);
-}
+  // There was a request to shim it for same-document
+  // ~> We can apply the shim directly
+  if (mode === "same-document" || mode === "both") {
+    shimSameDocument(setActiveTransition);
+  }
+
+  // There was a request to shim it for cross-document
+  // ~> We need to return the setActiveTransition function so that the auhtor can apply it themselves
+  // @NOTE: This needs to be done because of timing issues
+  if (mode === "cross-document" || mode === "both") {
+    // @ts-ignore
+    window.trackActiveViewTransition = shimCrossDocument(setActiveTransition);
+  }
+};
+
+export { setupActiveViewTransitionTracking };

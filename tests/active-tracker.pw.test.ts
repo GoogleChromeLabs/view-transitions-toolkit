@@ -14,9 +14,9 @@ test.describe("Active Tracker", () => {
 
     // Start a VT and get the activeViewTransition at various stages
     const result = await page.evaluate(async () => {
-      const { installActiveViewTransitionShim } =
+      const { setupActiveViewTransitionTracking } =
         await import("/dist/active-tracker.js");
-      installActiveViewTransitionShim();
+      setupActiveViewTransitionTracking("same-document");
 
       const activeViewTransitionBeforeOK =
         document.activeViewTransition === null;
@@ -49,9 +49,9 @@ test.describe("Active Tracker", () => {
 
     // Start a VT and get the activeViewTransition at various stages
     const result = await page.evaluate(async () => {
-      const { installActiveViewTransitionShim } =
+      const { setupActiveViewTransitionTracking } =
         await import("/dist/active-tracker.js");
-      installActiveViewTransitionShim();
+      setupActiveViewTransitionTracking("same-document");
 
       const t1 = document.startViewTransition(() => {});
       await t1.ready;
@@ -71,5 +71,42 @@ test.describe("Active Tracker", () => {
 
     expect(result.activeViewTransitionDuringVT1OK).toBe(true);
     expect(result.activeViewTransitionDuringVT2OK).toBe(true);
+  });
+
+  test("It should set/unset document.activeViewTransition (MPA)", async ({
+    page,
+  }, testInfo) => {
+    // Go to start of MPA
+    await page.goto("http://localhost:7357/tests/mpa/index.html");
+
+    // Navigate to next page
+    await page.getByRole("link").click();
+    await page.waitForURL("**/index2.html");
+
+    // Start a VT and get the activeViewTransition at various stages
+    const result = await page.evaluate(async () => {
+      return {
+        nativeCrossDocumentViewtransitionSupport,
+        nativeActiveViewTransitionSupport,
+        thereWasAViewTransitionDuringPageReveal,
+        thereWasAnActiveViewTransitionDuringPageReveal,
+        theViewTransitionDuringPageRevealMatchedTheActiveViewTransition,
+      };
+    });
+
+    test.skip(
+      !result.nativeCrossDocumentViewtransitionSupport,
+      `Browser has no support for Cross-Document View Transitions`,
+    );
+    test.skip(
+      result.nativeActiveViewTransitionSupport,
+      `Browser has native support for document.activeViewTransition`,
+    );
+
+    expect(result.thereWasAViewTransitionDuringPageReveal).toBe(true);
+    expect(result.thereWasAnActiveViewTransitionDuringPageReveal).toBe(true);
+    expect(
+      result.theViewTransitionDuringPageRevealMatchedTheActiveViewTransition,
+    ).toBe(true);
   });
 });
