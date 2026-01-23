@@ -16,6 +16,10 @@
 			"types": "./dist/extract-animations.d.ts",
 			"import": "./dist/extract-animations.js"
 		},
+		"./feature-detection": {
+			"types": "./dist/feature-detection.d.ts",
+			"import": "./dist/feature-detection.js"
+		},
 		"./measure": {
 			"types": "./dist/measure.d.ts",
 			"import": "./dist/measure.js"
@@ -51,9 +55,10 @@
         "prepublish": "npm run build",
         "type-check": "tsc --noEmit",
         "pretest": "npm run build && npx playwright install --with-deps && npm run pretest:install-old-browsers",
-        "pretest:install-old-browsers": "npm run pretest:install-chrome-140 && npm run pretest:install-webkit-18",
+        "pretest:install-old-browsers": "npm run pretest:install-chrome-140 && npm run pretest:install-webkit-18 && npm run pretest:install-firefox-142",
         "pretest:install-chrome-140": "PLAYWRIGHT_BROWSERS_PATH=./custom-browsers npx --yes playwright@1.55 install chromium",
         "pretest:install-webkit-18": "PLAYWRIGHT_BROWSERS_PATH=./custom-browsers npx --yes playwright@1.53 install webkit",
+        "pretest:install-firefox-142": "PLAYWRIGHT_BROWSERS_PATH=./custom-browsers npx --yes playwright@1.56 install firefox",
         "test": "playwright test",
 		"test:serve": "http-server . -p 7357 -d false --no-dotfiles",
         "preversion": "npm run require-license-headers && npm run require-pristine-tree && npm run test",

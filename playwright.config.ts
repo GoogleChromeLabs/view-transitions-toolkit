@@ -25,6 +25,14 @@ const browserPaths: BrowserPathConfigs = {
     linux: './custom-browsers/webkit-2182/pw_run.sh',
     win32: './custom-browsers/webkit-2182/webkit-win64/Playwright.exe', // @TODO: Verify path
   },
+  // Firefox 142 (bundled with Playwright 1.56, as firefox-1495)
+  // Installed automatically using `npm run pretest:install-firefox-142`
+  // This version is picked because it has no support any View Transitions
+  "firefox-142": {
+    darwin: './custom-browsers/firefox-1495/firefox/Nightly.app/Contents/MacOS/firefox',
+    linux: './custom-browsers/firefox-1495/firefox/firefox-bin',
+    win32: './custom-browsers/firefox-1495/firefox/firefox.exe', // @TODO: Verify path
+  },
 };
 
 
