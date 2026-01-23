@@ -8,9 +8,141 @@ A collection of utility functions to more easily work with View Transitions
 npm i view-transitions-toolkit
 ```
 
-## The Utilities
+## The Toolkit
 
-…
+### Feature Detection
+
+Get information about whether certain View Transitions subfeatures are supported or not.
+
+```js
+import { supports } from 'view-transitions-toolkit/feature-detection';
+console.log(supports);
+```
+
+```js
+{
+  sameDocument: true,
+  types: true,
+  crossDocument: false,
+  activeViewTransition: false,
+};
+```
+
+### Shim `document.activeViewTransition`
+
+Shim support for `document.activeViewTransition`. If supported natively, this won’t override whatever that was installed.
+
+Because of their different nature, installation is different for use with Same-Document View Transitions and Cross-Document View Transitions.
+
+- Same-Document View Transitions: Invoke the following before you rely on `document.activeViewTransition`:
+
+    ```js
+    import { setupActiveViewTransitionTracking } from 'view-transitions-toolkit/active-tracker';
+    setupActiveViewTransitionTracking('same-document');
+    ```
+
+- Cross-Document View Transitions: Include the following scripts in your HTML, before you rely on any `document.activeViewTransition` functionality:
+
+    ```html
+    <script>
+      window.addEventListener("pageswap", (e) => {
+        if (e.viewTransition) {
+          window.trackActiveViewTransition(e.viewTransition);
+        }
+      });
+      window.addEventListener("pagereveal", (e) => {
+        if (e.viewTransition) {
+          window.trackActiveViewTransition(e.viewTransition);
+        }
+      });
+    </script>
+    <script type="module" blocking="render">
+      import { setupActiveViewTransitionTracking } from 'view-transitions-toolkit/active-tracker';
+      setupActiveViewTransitionTracking('cross-document');
+    </script>
+    ```
+
+    _TIP: Most likely you won’t need this_
+
+### Extract Animations
+
+Get the animations linked to a View Transition
+
+- Get all animations:
+
+    ```js
+    import { getAnimations } from 'view-transitions-toolkit/extract-animations';
+
+    const viewTransition = document.startViewTransition(() => { … });
+    await t.ready;
+
+    // Get the animations linked to any VT-pseudo
+    const animations = getAnimations(viewTransition);
+    ```
+
+    ```js
+    // @TODO: Include Output here
+    ```
+
+- Get animations linked to a all VT-pseudos of a specific captured element (based on its `view-transition-name`):
+
+    ```js
+    import { getAnimations } from 'view-transitions-toolkit/extract-animations';
+
+    const viewTransition = document.startViewTransition(() => { … });
+    await t.ready;
+
+    // Get the animations linked to the box VT-pseudos
+    const animations = getAnimations(viewTransition, 'box');
+    ```
+
+    ```js
+    // @TODO: Include Output here
+    ```
+
+    The passed in value must be a valid `view-transition-name` value. Using `*` is also accepted, which is the equivalent of `getAnimations(viewTransition)`.
+
+- Get animations linked to a specific VT-pseudo of a specific captured element (based on its `view-transition-name`):
+
+    ```js
+    import { getAnimations, ViewTransitionPart } from 'view-transitions-toolkit/extract-animations';
+
+    const viewTransition = document.startViewTransition(() => { … });
+    await t.ready;
+
+    // Get the animations linked to the `::view-transition-group(box)` pseudo.
+    const animations = getAnimations(viewTransition, 'box', ViewTransitionPart.Group);
+    ```
+
+    ```js
+    // @TODO: Include Output here
+    ```
+
+    _(TIP: If you want to capture all `::view-transition-group()` animations, call `getAnimations(viewTransition, '*', ViewTransitionPart.Group)`)_
+
+### Transition Playback Control
+
+```js
+// @TODO
+```
+
+### `setTemporaryViewTransitionNames`
+
+```js
+// @TODO
+```
+
+### Measuring Tools
+
+```js
+// @TODO
+```
+
+### Automatic Page Navigation Types
+
+```js
+// @TODO
+```
 
 ## Demos
 
