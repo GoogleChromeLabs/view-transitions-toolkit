@@ -4,6 +4,7 @@
  */
 
 import { test, expect, type Page } from "@playwright/test";
+import { expectedResults } from "./test-data.js";
 
 test.describe("Active Tracker", () => {
   test("It should set/unset document.activeViewTransition (SPA)", async ({
@@ -76,6 +77,18 @@ test.describe("Active Tracker", () => {
   test("It should set/unset document.activeViewTransition (MPA)", async ({
     page,
   }, testInfo) => {
+    const project = testInfo.project.name;
+    const { crossDocument, activeViewTransition } = expectedResults[project];
+
+    test.skip(
+      !crossDocument,
+      `Browser has no support for Cross-Document View Transitions`,
+    );
+    test.skip(
+      activeViewTransition,
+      `Browser has native support for document.activeViewTransition`,
+    );
+
     // Go to start of MPA
     await page.goto("http://localhost:7357/tests/mpa/index.html");
 
@@ -86,22 +99,11 @@ test.describe("Active Tracker", () => {
     // Start a VT and get the activeViewTransition at various stages
     const result = await page.evaluate(async () => {
       return {
-        nativeCrossDocumentViewtransitionSupport,
-        nativeActiveViewTransitionSupport,
         thereWasAViewTransitionDuringPageReveal,
         thereWasAnActiveViewTransitionDuringPageReveal,
         theViewTransitionDuringPageRevealMatchedTheActiveViewTransition,
       };
     });
-
-    test.skip(
-      !result.nativeCrossDocumentViewtransitionSupport,
-      `Browser has no support for Cross-Document View Transitions`,
-    );
-    test.skip(
-      result.nativeActiveViewTransitionSupport,
-      `Browser has native support for document.activeViewTransition`,
-    );
 
     expect(result.thereWasAViewTransitionDuringPageReveal).toBe(true);
     expect(result.thereWasAnActiveViewTransitionDuringPageReveal).toBe(true);

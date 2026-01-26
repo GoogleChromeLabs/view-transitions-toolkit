@@ -31,8 +31,6 @@
       });
     </script>
     <script>
-      window.nativeCrossDocumentViewtransitionSupport = "CSSViewTransitionRule" in window;
-      window.nativeActiveViewTransitionSupport = "activeViewTransition" in Document.prototype;
       window.thereWasAViewTransitionDuringPageReveal = false;
       window.thereWasAnActiveViewTransitionDuringPageReveal = false;
       window.theViewTransitionDuringPageRevealMatchedTheActiveViewTransition = false;
@@ -45,8 +43,6 @@
             e.viewTransition === document.activeViewTransition;
         }
         console.log({
-          nativeCrossDocumentViewtransitionSupport,
-          nativeActiveViewTransitionSupport,
           thereWasAViewTransitionDuringPageReveal,
           thereWasAnActiveViewTransitionDuringPageReveal,
           theViewTransitionDuringPageRevealMatchedTheActiveViewTransition,
