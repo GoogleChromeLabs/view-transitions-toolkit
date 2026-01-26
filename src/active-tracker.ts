@@ -99,7 +99,7 @@ const setupActiveViewTransitionTracking = (
   // @NOTE: This needs to be done because of timing issues
   if (mode === "cross-document" || mode === "both") {
     // @ts-ignore
-    window.trackActiveViewTransition = shimCrossDocument(setActiveTransition);
+    return shimCrossDocument(setActiveTransition);
   }
 };
 

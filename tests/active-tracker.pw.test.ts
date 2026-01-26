@@ -16,7 +16,7 @@ test.describe("Active Tracker", () => {
     const result = await page.evaluate(async () => {
       const { setupActiveViewTransitionTracking } =
         await import("/dist/active-tracker.js");
-      setupActiveViewTransitionTracking("same-document");
+      setupActiveViewTransitionTracking();
 
       const activeViewTransitionBeforeOK =
         document.activeViewTransition === null;
@@ -51,7 +51,7 @@ test.describe("Active Tracker", () => {
     const result = await page.evaluate(async () => {
       const { setupActiveViewTransitionTracking } =
         await import("/dist/active-tracker.js");
-      setupActiveViewTransitionTracking("same-document");
+      setupActiveViewTransitionTracking();
 
       const t1 = document.startViewTransition(() => {});
       await t1.ready;
@@ -109,4 +109,6 @@ test.describe("Active Tracker", () => {
       result.theViewTransitionDuringPageRevealMatchedTheActiveViewTransition,
     ).toBe(true);
   });
+
+  // @TODO: Test the various modes
 });

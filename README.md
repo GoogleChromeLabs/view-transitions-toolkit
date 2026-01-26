@@ -38,12 +38,16 @@ Because of their different nature, installation is different for use with Same-D
 
     ```js
     import { setupActiveViewTransitionTracking } from 'view-transitions-toolkit/active-tracker';
-    setupActiveViewTransitionTracking('same-document');
+    setupActiveViewTransitionTracking();
     ```
 
 - Cross-Document View Transitions: Include the following scripts in your HTML, before you rely on any `document.activeViewTransition` functionality:
 
     ```html
+    <script type="module" blocking="render">
+      import { setupActiveViewTransitionTracking } from "/dist/active-tracker.js";
+      window.trackActiveViewTransition = setupActiveViewTransitionTracking();
+    </script>
     <script>
       window.addEventListener("pageswap", (e) => {
         if (e.viewTransition) {
@@ -55,10 +59,6 @@ Because of their different nature, installation is different for use with Same-D
           window.trackActiveViewTransition(e.viewTransition);
         }
       });
-    </script>
-    <script type="module" blocking="render">
-      import { setupActiveViewTransitionTracking } from 'view-transitions-toolkit/active-tracker';
-      setupActiveViewTransitionTracking('cross-document');
     </script>
     ```
 

@@ -14,6 +14,10 @@
         navigation: auto;
       }
     </style>
+    <script type="module" blocking="render">
+      import { setupActiveViewTransitionTracking } from "/dist/active-tracker.js";
+      window.trackActiveViewTransition = setupActiveViewTransitionTracking();
+    </script>
     <script>
       window.addEventListener("pageswap", (e) => {
         if (e.viewTransition) {
@@ -25,10 +29,6 @@
           window.trackActiveViewTransition(e.viewTransition);
         }
       });
-    </script>
-    <script type="module" blocking="render">
-      import { setupActiveViewTransitionTracking } from "/dist/active-tracker.js";
-      setupActiveViewTransitionTracking('cross-document');
     </script>
     <script type="module">
       window.nativeCrossDocumentViewtransitionSupport = "CSSViewTransitionRule" in window;
