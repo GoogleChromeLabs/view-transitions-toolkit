@@ -15,8 +15,8 @@
       }
     </style>
     <script type="module" blocking="render">
-      import { setupActiveViewTransitionTracking } from "/dist/active-tracker.js";
-      window.trackActiveViewTransition = setupActiveViewTransitionTracking();
+      import { trackActiveViewTransition } from "/dist/track-active-view-transition.js";
+      window.trackActiveViewTransition = trackActiveViewTransition();
     </script>
     <script>
       window.addEventListener("pageswap", (e) => {

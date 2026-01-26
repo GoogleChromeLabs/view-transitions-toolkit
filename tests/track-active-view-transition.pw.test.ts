@@ -6,7 +6,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { expectedResults } from "./test-data.js";
 
-test.describe("Active Tracker", () => {
+test.describe("track-active-view-transition", () => {
   test("It should set/unset document.activeViewTransition (SPA)", async ({
     page,
   }) => {
@@ -15,9 +15,9 @@ test.describe("Active Tracker", () => {
 
     // Start a VT and get the activeViewTransition at various stages
     const result = await page.evaluate(async () => {
-      const { setupActiveViewTransitionTracking } =
-        await import("/dist/active-tracker.js");
-      setupActiveViewTransitionTracking();
+      const { trackActiveViewTransition } =
+        await import("/dist/track-active-view-transition.js");
+      trackActiveViewTransition();
 
       const activeViewTransitionBeforeOK =
         document.activeViewTransition === null;
@@ -50,9 +50,9 @@ test.describe("Active Tracker", () => {
 
     // Start a VT and get the activeViewTransition at various stages
     const result = await page.evaluate(async () => {
-      const { setupActiveViewTransitionTracking } =
-        await import("/dist/active-tracker.js");
-      setupActiveViewTransitionTracking();
+      const { trackActiveViewTransition } =
+        await import("/dist/track-active-view-transition.js");
+      trackActiveViewTransition();
 
       const t1 = document.startViewTransition(() => {});
       await t1.ready;

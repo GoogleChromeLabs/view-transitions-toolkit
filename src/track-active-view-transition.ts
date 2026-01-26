@@ -43,7 +43,7 @@ const shimCrossDocument = (
   return setActiveTransition;
 };
 
-const setupActiveViewTransitionTracking = (
+const trackActiveViewTransition = (
   mode?: string,
 ): ActiveTransitionSetter | void => {
   // No mode passed into this? Default to both
@@ -103,4 +103,4 @@ const setupActiveViewTransitionTracking = (
   }
 };
 
-export { setupActiveViewTransitionTracking };
+export { trackActiveViewTransition };

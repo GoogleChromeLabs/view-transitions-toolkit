@@ -4,9 +4,9 @@
     "description": "A collection of utility functions to more easily work with View Transitions",
     "type": "module",
 	"exports": {
-		"./active-tracker": {
-			"types": "./dist/active-tracker.d.ts",
-			"import": "./dist/active-tracker.js"
+		"./track-active-view-transition": {
+			"types": "./dist/track-active-view-transition.d.ts",
+			"import": "./dist/track-active-view-transition.js"
 		},
 		"./auto-navigation-types": {
 			"types": "./dist/auto-navigation-types.d.ts",

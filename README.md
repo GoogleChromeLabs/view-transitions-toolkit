@@ -37,16 +37,16 @@ Because of their different nature, installation is different for use with Same-D
 - Same-Document View Transitions: Invoke the following before you rely on `document.activeViewTransition`:
 
     ```js
-    import { setupActiveViewTransitionTracking } from 'view-transitions-toolkit/active-tracker';
-    setupActiveViewTransitionTracking();
+    import { trackActiveViewTransition } from 'view-transitions-toolkit/track-active-view-transition';
+    trackActiveViewTransition();
     ```
 
 - Cross-Document View Transitions: Include the following scripts in your HTML, before you rely on any `document.activeViewTransition` functionality:
 
     ```html
     <script type="module" blocking="render">
-      import { setupActiveViewTransitionTracking } from "/dist/active-tracker.js";
-      window.trackActiveViewTransition = setupActiveViewTransitionTracking();
+      import { trackActiveViewTransition } from "/dist/track-active-view-transition.js";
+      window.trackActiveViewTransition = trackActiveViewTransition();
     </script>
     <script>
       window.addEventListener("pageswap", (e) => {
