@@ -7,6 +7,7 @@ export type SupportsData = {
   sameDocument: boolean;
   types: boolean;
   crossDocument: boolean;
+  elementScoped: boolean;
   activeViewTransition: boolean;
 };
 
@@ -19,36 +20,42 @@ export const expectedResults: SupportsMatrix = {
     sameDocument: true,
     types: true,
     crossDocument: true,
+    elementScoped: false,
     activeViewTransition: true,
   },
   firefox: {
     sameDocument: true,
     types: false,
     crossDocument: false,
+    elementScoped: false,
     activeViewTransition: false,
   },
   webkit: {
     sameDocument: true,
     types: true,
     crossDocument: true,
+    elementScoped: false,
     activeViewTransition: true,
   },
   "chromium-140": {
     sameDocument: true,
     types: true,
     crossDocument: true,
+    elementScoped: false,
     activeViewTransition: false,
   },
   "webkit-18": {
     sameDocument: true,
     types: true,
     crossDocument: true,
+    elementScoped: false,
     activeViewTransition: false,
   },
   "firefox-142": {
     sameDocument: false,
     types: false,
     crossDocument: false,
+    elementScoped: false,
     activeViewTransition: false,
   },
 };

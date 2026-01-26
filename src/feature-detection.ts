@@ -7,6 +7,7 @@ const supports = {
   sameDocument: !!document.startViewTransition,
   types: "ViewTransitionTypeSet" in window,
   crossDocument: "CSSViewTransitionRule" in window,
+  elementScoped: "startViewTransition" in Element.prototype,
   activeViewTransition: "activeViewTransition" in Document.prototype,
 };
 
