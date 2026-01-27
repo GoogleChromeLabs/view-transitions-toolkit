@@ -153,7 +153,7 @@ scrub(vt, 0.5); // Sets all VT animations to 50% playback (and pauses them along
 
 ## Demos
 
-Demos are included in this repository. Run `npm run dev` and visit `http://127.0.0.1:8000/` to see the demos.
+Demos are included in this repository. Run `npm run start` and visit `http://127.0.0.1:3000/` to see the demos.
 
 ```bash
 npm run dev
