@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Transitions Toolkit Demo: Playback Control</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js"></script>
+  <script type="module">
+    import { pause, resume, scrub } from '../js/playback-control.js';
+    import { getAnimations, ViewTransitionPart } from '../js/extract-animations.js';
+
+    // The View Transition and one of its animations to track
+    let t, a;
+
+    const syncProgressToSlider = () => {
+      document.getElementById("scrub").value = a.effect.getComputedTiming().progress.toFixed(2);
+      requestAnimationFrame(syncProgressToSlider);
+    }
+
+    // When clicking the start button, start a View Transition
+    document.getElementById("start").addEventListener("click", async () => {
+      document.getElementById("start").disabled = true;
+      document.getElementById("pause").disabled = false;
+      document.getElementById("resume").disabled = true;
+      document.getElementById("scrub").disabled = true;
+
+      t = document.startViewTransition(() => {
+        document.querySelector('.box').classList.toggle('supergreen');
+      });
+
+      t.ready.then(() => {
+        a = getAnimations(t, 'box', ViewTransitionPart.Group)[0];
+
+        // Start a rAF with syncProgressToSlider
+        requestAnimationFrame(syncProgressToSlider);
+      });
+
+      t.finished.then(() => {
+        document.getElementById("start").disabled = false;
+        document.getElementById("pause").disabled = true;
+        document.getElementById("resume").disabled = true;
+        document.getElementById("scrub").disabled = true;
+
+        // Stop the rAF
+        cancelAnimationFrame(syncProgressToSlider);
+      });
+    });
+
+    // When clicking the pause button, pause the View Transition
+    document.getElementById("pause").addEventListener("click", () => {
+      document.getElementById("start").disabled = true;
+      document.getElementById("pause").disabled = true;
+      document.getElementById("resume").disabled = false;
+      document.getElementById("scrub").disabled = false;
+
+      // Pause the VT
+      pause(t);
+
+      // Stop the rAF
+      cancelAnimationFrame(syncProgressToSlider);
+    });
+
+    // When clicking the resume button, unpause the View Transition
+    document.getElementById("resume").addEventListener("click", () => {
+      document.getElementById("start").disabled = true;
+      document.getElementById("pause").disabled = false;
+      document.getElementById("resume").disabled = true;
+      document.getElementById("scrub").disabled = true;
+
+      resume(t);
+
+      // Start a rAF with syncProgressToSlider
+      requestAnimationFrame(syncProgressToSlider);
+    });
+
+    // When moving the slider, scrub the View Transition
+    document.getElementById("scrub").addEventListener("input", (e) => {
+      scrub(t, e.target.value);
+    });
+  </script>
+  <style>
+    :root {
+      view-transition-name: none;
+    }
+    .box {
+      view-transition-name: box;
+    }
+    ::view-transition {
+      pointer-events: none;
+    }
+    ::view-transition-group(*) {
+      animation-duration: 5s;
+    }
+
+    .box {
+      height: 2em;
+      width: 2em;
+      background: blue;
+
+      &.supergreen {
+        background: green;
+        margin-left: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="box"></div>
+
+  <button id="start">Start VT</button>
+  <button id="pause" disabled>Pause VT</button>
+  <button id="resume" disabled>Resume VT</button>
+  <input  id="scrub" type="range" min="0" max="1" step="0.01" value="0" disabled>
+</body>
+</html>
