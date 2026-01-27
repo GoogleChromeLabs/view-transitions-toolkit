@@ -3,14 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { getAnimations } from "./extract-animations";
+import { getAnimations } from "./extract-animations.js";
 
 /**
  * Pauses the View Transition by pausing all animations associated with the current View Transition.
  *
  * @param vt - The ViewTransition instance.
  */
-export function pauseViewTransition(vt: ViewTransition): void {
+export function pause(vt: ViewTransition): void {
   // Retrieve all animations linked to this transition
   const animations = getAnimations(vt);
 
@@ -25,7 +25,7 @@ export function pauseViewTransition(vt: ViewTransition): void {
  *
  * @param vt - The ViewTransition instance.
  */
-export function playViewTransition(vt: ViewTransition): void {
+export function resume(vt: ViewTransition): void {
   // Retrieve all animations linked to this transition
   const animations = getAnimations(vt);
 
@@ -42,10 +42,7 @@ export function playViewTransition(vt: ViewTransition): void {
  * @param vt - The ViewTransition instance.
  * @param progress - A number between 0 (start) and 1 (end).
  */
-export function scrubViewTransition(
-  vt: ViewTransition,
-  progress: number,
-): void {
+export function scrub(vt: ViewTransition, progress: number): void {
   // 1. Clamp progress between 0 and 1 to prevent errors
   const safeProgress = Math.max(0, Math.min(1, progress));
 
@@ -78,7 +75,7 @@ const transition = document.startViewTransition(() => {
 await transition.ready;
 
 // Pause immediately to freeze the transition on the first frame
-pauseViewTransition(transition);
+pause(transition);
 */
 
 /*

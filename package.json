@@ -28,9 +28,9 @@
 			"types": "./dist/optimize.d.ts",
 			"import": "./dist/optimize.js"
 		},
-		"./play-pause-scrub": {
-			"types": "./dist/play-pause-scrub.d.ts",
-			"import": "./dist/play-pause-scrub.js"
+		"./playback-control": {
+			"types": "./dist/playback-control.d.ts",
+			"import": "./dist/playback-control.js"
 		},
 		"./temp-names": {
 			"types": "./dist/temp-names.d.ts",
