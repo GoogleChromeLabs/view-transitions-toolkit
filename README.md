@@ -126,7 +126,7 @@ Get the animations linked to a View Transition
 Control the playback of a View Transition
 
 ```js
-import { pause, resume, scrub } from '../js/playback-control.js';
+import { pause, resume, scrub } from 'view-transitions-toolkit/playback-control';
 
 pause(vt); // Pauses all VT animations
 resume(vt); // Resumses all VT animations
