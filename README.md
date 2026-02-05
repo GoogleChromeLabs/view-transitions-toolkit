@@ -74,11 +74,11 @@ Get the animations linked to a View Transition
     ```js
     import { getAnimations } from 'view-transitions-toolkit/extract-animations';
 
-    const viewTransition = document.startViewTransition(() => { … });
+    const t = document.startViewTransition(() => { … });
     await t.ready;
 
     // Get the animations linked to any VT-pseudo
-    const animations = getAnimations(viewTransition);
+    const animations = getAnimations(t);
     ```
 
     ```js
@@ -90,11 +90,11 @@ Get the animations linked to a View Transition
     ```js
     import { getAnimations } from 'view-transitions-toolkit/extract-animations';
 
-    const viewTransition = document.startViewTransition(() => { … });
+    const t = document.startViewTransition(() => { … });
     await t.ready;
 
     // Get the animations linked to the box VT-pseudos
-    const animations = getAnimations(viewTransition, 'box');
+    const animations = getAnimations(t, 'box');
     ```
 
     ```js
@@ -108,11 +108,11 @@ Get the animations linked to a View Transition
     ```js
     import { getAnimations, ViewTransitionPart } from 'view-transitions-toolkit/extract-animations';
 
-    const viewTransition = document.startViewTransition(() => { … });
+    const t = document.startViewTransition(() => { … });
     await t.ready;
 
     // Get the animations linked to the `::view-transition-group(box)` pseudo.
-    const animations = getAnimations(viewTransition, 'box', ViewTransitionPart.Group);
+    const animations = getAnimations(t, 'box', ViewTransitionPart.Group);
     ```
 
     ```js
@@ -128,9 +128,12 @@ Control the playback of a View Transition
 ```js
 import { pause, resume, scrub } from 'view-transitions-toolkit/playback-control';
 
-pause(vt); // Pauses all VT animations
-resume(vt); // Resumses all VT animations
-scrub(vt, 0.5); // Sets all VT animations to 50% playback (and pauses them along the way)
+const t = document.startViewTransition(() => { … });
+await t.ready;
+
+pause(t); // Pauses all VT animations
+resume(t); // Resumses all VT animations
+scrub(t, 0.5); // Sets all VT animations to 50% playback (and pauses them along the way)
 ```
 
 ### `setTemporaryViewTransitionNames`
@@ -145,7 +148,7 @@ scrub(vt, 0.5); // Sets all VT animations to 50% playback (and pauses them along
 import { getAnimations, ViewTransitionPart } from "view-transitions-toolkit/extract-animations";
 import { extractGeometry } from 'view-transitions-toolkit/extract-geometry';
 
-const viewTransition = document.startViewTransition(() => { … });
+const t = document.startViewTransition(() => { … });
 await t.ready;
 
 const boxGroupAnimation = getAnimations(t, "box", ViewTransitionPart.Group)[0];
