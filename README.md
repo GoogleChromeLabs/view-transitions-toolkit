@@ -171,6 +171,37 @@ console.log(boxGroupGeometry);
 }
 ```
 
+### Animation Optimization
+
+#### Automatic
+
+```js
+import { optimizeGroupAnimations } from "view-transitions-toolkit/optimize";
+
+const t = document.startViewTransition(() => { … });
+await t.ready;
+
+optimizeGroupAnimations(t, "*"); // Optimize all Group Animations
+optimizeGroupAnimations(t, "box-flip"); // Optimize only the `::view-transition-group(box-flip)` animation
+```
+
+#### Manual
+
+```js
+import { getAnimations, ViewTransitionPart } from "view-transitions-toolkit/extract-animations";
+import { extractGeometry } from "view-transitions-toolkit/measure";
+import { optimizeAnimation } from "view-transitions-toolkit/optimize";
+
+const t = document.startViewTransition(() => { … });
+await t.ready;
+
+const groupAnimations = getAnimations(t, "*", ViewTransitionPart.Group);
+groupAnimations.forEach((a) => {
+  const geometry = extractGeometry(a);
+  optimizeAnimation(a, geometry);
+});
+```
+
 ### Automatic Page Navigation Types
 
 ```js

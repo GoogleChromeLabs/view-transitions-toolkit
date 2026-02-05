@@ -1,0 +1,76 @@
+@import "https://unpkg.com/open-props" layer(design.system);
+@import "https://unpkg.com/open-props/normalize.min.css" layer(demo.support);
+
+@layer demo {
+  ::view-transition {
+    pointer-events: none;
+  }
+  ::view-transition-group(*) {
+    animation-duration: 2s;
+    animation-timing-function: ease;
+  }
+  #box-normal {
+    view-transition-name: box-normal;
+    z-index: 2;
+  }
+  #box-flip {
+    view-transition-name: box-flip;
+    z-index: 2;
+  }
+  
+  .debug {
+    position: fixed;
+    outline: 1px solid hotpink;
+    
+    &#before {
+      background: #eee;
+    }
+  }
+}
+
+@layer jank {
+  html.jank {
+    background-color: rgb(255 0 0 / 0.2);
+    
+    &::after {
+      content: "JANK!";
+      display: inline-block;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      translate: -50% -50%;
+      font-size: 2rem;
+      color: red;
+      font-weight: 700;
+    }
+  }
+}
+
+@layer demo.support {
+  .box {
+    aspect-ratio: 1;
+    inline-size: 20vmin;
+    background: var(--link);
+    
+    color: white;
+    display: grid;
+    place-content: center;
+
+    &.bigger {
+      inline-size: 30vmin;
+    }
+  }
+  
+  body {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+    padding: var(--size-5);
+    gap: var(--size-5);
+  }
+  
+  html {
+    view-transition-name: none;
+  }
+}

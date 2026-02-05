@@ -3,12 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { extractGeometry, ViewTransitionGeometry } from "./measure";
-import { getAnimations, ViewTransitionPart } from "./extract-animations";
+import { extractGeometry, ViewTransitionGeometry } from "./measure.js";
+import { getAnimations, ViewTransitionPart } from "./extract-animations.js";
 
 /**
  * Replaces the animation's keyframes with an optimized version.
- * * Instead of animating width/height (which triggers layout), it fixes the dimensions
+ * Instead of animating width/height (which triggers layout), it fixes the dimensions
  * to the 'end' state and uses a CSS scale transform to emulate the size change.
  *
  * @param animation - The CSSAnimation to optimize.
@@ -16,44 +16,40 @@ import { getAnimations, ViewTransitionPart } from "./extract-animations";
  */
 export function optimizeAnimation(
   animation: CSSAnimation,
-  geometry: { start: ViewTransitionGeometry; end: ViewTransitionGeometry },
+  geometry: { before: ViewTransitionGeometry; after: ViewTransitionGeometry },
 ): void {
-  const { start, end } = geometry;
+  const { before, after } = geometry;
   const effect = animation.effect as KeyframeEffect;
+  const keyframes = effect.getKeyframes();
 
-  // 1. Calculate Scale Factors
-  // We compare the start size to the end size to determine how much we need to scale.
-  // Safety check: Prevent division by zero if the element disappears (0 width).
-  const scaleX = end.width === 0 ? 1 : start.width / end.width;
-  const scaleY = end.height === 0 ? 1 : start.height / end.height;
+  // Bail out if there are no two keyframes
+  if (keyframes.length !== 2) {
+    console.warn("Optimize only works with 2 keyframes");
+    return;
+  }
 
-  // @TODO: Verify this against https://www.bram.us/2025/03/04/view-transitions-snapshot-containing-block/
-  // 2. Construct the Optimized Start Transform
-  // The logic:
-  // - We set the element to its FINAL size (end.width, end.height).
-  // - We apply the START position (start.transform).
-  // - We apply a SCALE to visually shrink/grow the final size back to the start size.
-  //
-  // Note: ::view-transition-group elements have a default `transform-origin: 0 0`.
-  // This is critical; it means scaling applies from the top-left corner, preserving
-  // the position set by the translation.
-  const baseTransform = start.transform === "none" ? "" : start.transform;
-  const startTransform = `${baseTransform} scale(${scaleX}, ${scaleY})`;
+  // Build flip keyframes, copying over the easing from the existing effect
+  // See https://www.bram.us/2025/03/04/view-transitions-snapshot-containing-block/ for details
+  // @TODO: Make scale transforms optional
+  const flipKeyframes = {
+    transform: [
+      `translate(${before.left}px,${before.top}px) scaleX(${before.width / after.width}) scaleY(${before.height / after.height})`,
+      `translate(${after.left}px,${after.top}px) scaleX(1) scaleY(1)`,
+    ],
+    transformOrigin: ["0% 0%", "0% 0%"],
+    easing: [keyframes[0].easing, keyframes[1].easing],
+  };
 
-  // 3. Apply New Keyframes
-  // We fix width and height to the END values for the entire duration.
-  effect.setKeyframes([
-    {
-      width: `${end.width}px`,
-      height: `${end.height}px`,
-      transform: startTransform,
-    },
-    {
-      width: `${end.width}px`,
-      height: `${end.height}px`,
-      transform: end.transform,
-    },
-  ]);
+  // @TODO: This requires a tad of CSS …
+  // ::view-transition-new(*),
+  // ::view-transition-old(*) {
+  //   width: 100%;
+  //   height: 100%;
+  //   object-fit: fill;
+  // }
+
+  // Write the new keyframes
+  effect.setKeyframes(flipKeyframes);
 }
 
 /**
@@ -61,26 +57,27 @@ export function optimizeAnimation(
  */
 export function optimizeGroupAnimations(
   vt: ViewTransition,
-  targets: boolean | "*" | string[],
+  targets: "*" | string | string[],
 ) {
-  if (targets === false) return;
+  // If targets is an array, loop over all targets and get the relevant group animation. Store it in a temp array
+  let animationsToOptimize: CSSAnimation[] = [];
+  if (Array.isArray(targets)) {
+    for (const target of targets) {
+      const animations = getAnimations(vt, target, ViewTransitionPart.Group);
 
-  const allGroupAnimations = getAnimations(vt, "*", ViewTransitionPart.Group);
-
-  if (!allGroupAnimations) return;
-
-  const animationsToOptimize = allGroupAnimations.filter(
-    (anim: CSSAnimation) => {
-      if (targets === "*" || targets === true) return true;
-
-      if (Array.isArray(targets)) {
-        const effect = anim.effect as KeyframeEffect;
-        const pseudo = effect.pseudoElement || "";
-        return targets.some((id) => pseudo.includes(`(${id})`));
+      if (animations.length && animations[0]) {
+        animationsToOptimize.push(animations[0]);
       }
-      return false;
-    },
-  );
+    }
+  } else {
+    const animations = getAnimations(vt, targets, ViewTransitionPart.Group);
+
+    if (animations.length) {
+      animationsToOptimize.push(...animations);
+    }
+  }
+
+  if (!animationsToOptimize.length) return;
 
   animationsToOptimize.forEach((anim: CSSAnimation) => {
     try {
@@ -91,19 +88,3 @@ export function optimizeGroupAnimations(
     }
   });
 }
-
-/*
-const transition = document.startViewTransition(() => updateDOM());
-await transition.ready;
-
-// 1. Get all "Group" animations (the ones that move/resize)
-const groupAnimations = getAnimations(transition, "*", ViewTransitionPart.Group);
-
-groupAnimations.forEach((anim) => {
-  // 2. Extract the browser-calculated positions
-  const geometry = extractGeometry(anim);
-  
-  // 3. Apply the optimization
-  optimizeAnimation(anim, geometry);
-});
-*/
