@@ -9,67 +9,70 @@
 export interface ViewTransitionGeometry {
   width: number;
   height: number;
-  transform: string;
+  left: number;
+  top: number;
 }
 
 /**
- * Detects if the current browser environment is exhibiting Chromium bug #387030974.
- * In affected versions, the end keyframes for ::view-transition-group
- * often contain missing or "auto" dimensions instead of absolute pixel values.
+ * Detects if the current browser environment is affected by
+ * https://crbug.com/387030974 (Chrome < 137)
  *
- * @param frame - The last keyframe of the animation.
+ * @param keyframe - The keyframe of the animation
  * @returns True if the keyframe data is incomplete/untrustworthy.
  */
-function isBuggyChromium(frame: Keyframe): boolean {
-  // If width or height are missing, empty, or "auto", we cannot use them for geometry.
-  if (!frame.width || !frame.height) return true;
-  if (frame.width === "auto" || frame.height === "auto") return true;
-
+const isBuggyChromium = (keyframe: ComputedKeyframe): boolean => {
+  if (keyframe.transform === "none") return true;
   return false;
-}
+};
+
+// Helper to safely parse pixel strings ("100px")
+const parseVal = (val: string | number | null | undefined): number => {
+  if (typeof val === "number") return val;
+  if (typeof val === "string") return parseFloat(val);
+  return 0;
+};
 
 /**
- * Extracts the start and end geometry from a View Transition CSSAnimation.
+ * Extracts the before and end geometry from a View Transition CSSAnimation.
  * Automatically handles browser bugs where keyframe data might be missing.
  *
  * @param animation - The CSSAnimation instance.
- * @returns An object containing the start and end geometry.
+ * @returns An object containing the before and end geometry.
  */
 export function extractGeometry(animation: CSSAnimation): {
-  start: ViewTransitionGeometry;
-  end: ViewTransitionGeometry;
+  before: ViewTransitionGeometry;
+  after: ViewTransitionGeometry;
 } {
   const effect = animation.effect;
   if (!(effect instanceof KeyframeEffect)) {
     throw new Error("Animation effect is not a KeyframeEffect");
   }
 
-  const keyframes = effect.getKeyframes();
-  if (keyframes.length < 2) {
-    throw new Error("Animation does not have enough keyframes");
+  const keyframes: Array<ComputedKeyframe> = effect.getKeyframes();
+  if (keyframes.length != 2) {
+    throw new Error("Optimize only works with 2 keyframes");
   }
 
-  const startFrame = keyframes[0];
-  const endFrame = keyframes[keyframes.length - 1];
+  const startFrame: ComputedKeyframe = keyframes[0];
+  const endFrame: ComputedKeyframe = keyframes[keyframes.length - 1];
 
-  // Helper to safely parse pixel strings ("100px")
-  const parseVal = (val: string | number | null | undefined): number => {
-    if (typeof val === "number") return val;
-    if (typeof val === "string") return parseFloat(val);
-    return 0;
-  };
+  let rectBefore, rectAfter: ViewTransitionGeometry;
 
-  // 1. Extract Start Geometry
-  const start: ViewTransitionGeometry = {
+  if (!startFrame.transform || !endFrame.transform) {
+    throw new Error("Transforms are missing");
+  }
+
+  // Build rect to represent the before position + size
+  // based off of the “from” transform value
+  const beforeMatrix: DOMMatrix = new DOMMatrix(startFrame.transform as string);
+  rectBefore = {
     width: parseVal(startFrame.width),
     height: parseVal(startFrame.height),
-    transform: (startFrame.transform as string) || "none",
+    left: beforeMatrix.e,
+    top: beforeMatrix.f,
   };
 
-  // 2. Extract End Geometry
-  let end: ViewTransitionGeometry;
-
-  if (isBuggyChromium(endFrame) && effect.pseudoElement) {
+  if (isBuggyChromium(endFrame)) {
     // FALLBACK: Scrub to the end and read computed styles directly from the DOM
     const originalTime = animation.currentTime;
     const timing = effect.getComputedTiming();
@@ -77,28 +80,35 @@ export function extractGeometry(animation: CSSAnimation): {
     // Move playhead to the end
     animation.currentTime = (timing.duration as number) || 0;
 
-    // Read live style
-    const style = window.getComputedStyle(
+    // Read new styles
+    const newStyles = window.getComputedStyle(
       document.documentElement,
       effect.pseudoElement,
     );
 
-    end = {
-      width: parseVal(style.width),
-      height: parseVal(style.height),
-      transform: style.transform !== "none" ? style.transform : "none",
+    const afterMatrix = new DOMMatrix(newStyles.transform);
+
+    rectAfter = {
+      width: parseVal(newStyles.width),
+      height: parseVal(newStyles.height),
+      left: afterMatrix.e,
+      top: afterMatrix.f,
     };
 
     // Restore playhead
     animation.currentTime = originalTime;
   } else {
-    // STANDARD: Read directly from keyframes
-    end = {
+    const afterMatrix = new DOMMatrix(endFrame.transform as string);
+    rectAfter = {
       width: parseVal(endFrame.width),
       height: parseVal(endFrame.height),
-      transform: (endFrame.transform as string) || "none",
+      left: afterMatrix.e,
+      top: afterMatrix.f,
     };
   }
 
-  return { start, end };
+  return {
+    before: rectBefore,
+    after: rectAfter,
+  };
 }

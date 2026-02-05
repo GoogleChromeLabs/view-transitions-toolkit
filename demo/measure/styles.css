@@ -1,0 +1,50 @@
+@import "https://unpkg.com/open-props" layer(design.system);
+@import "https://unpkg.com/open-props/normalize.min.css" layer(demo.support);
+
+@layer demo {
+  ::view-transition {
+    pointer-events: none;
+  }
+  ::view-transition-group(*) {
+    animation-duration: 1s;
+  }
+  
+  .box {
+    view-transition-name: box;
+  }
+  
+  .debug {
+    position: fixed;
+    outline: 1px solid hotpink;
+    
+    &#before {
+      background: #eee;
+    }
+  }
+  #debug {
+    position: fixed;
+    opacity: 0.5;
+    font-family: monospace;
+    padding: 0.2rem;
+    white-space: pre-wrap;
+  }
+}
+
+@layer demo.support {
+  .box {
+    aspect-ratio: 1;
+    inline-size: 20vmin;
+    background: var(--link);
+  }
+  
+  body {
+    display: grid;
+    place-content: center;
+    padding: var(--size-5);
+    gap: var(--size-5);
+  }
+  
+  html {
+    view-transition-name: none;
+  }
+}

@@ -142,7 +142,33 @@ scrub(vt, 0.5); // Sets all VT animations to 50% playback (and pauses them along
 ### Measuring Tools
 
 ```js
-// @TODO
+import { getAnimations, ViewTransitionPart } from "view-transitions-toolkit/extract-animations";
+import { extractGeometry } from 'view-transitions-toolkit/extract-geometry';
+
+const viewTransition = document.startViewTransition(() => { … });
+await t.ready;
+
+const boxGroupAnimation = getAnimations(t, "box", ViewTransitionPart.Group)[0];
+const boxGroupGeometry = extractGeometry(boxGroupAnimation);
+
+console.log(boxGroupGeometry);
+```
+
+```json
+{
+    "before": {
+        "width": 199.391,
+        "height": 199.391,
+        "left": 1504.5,
+        "top": 24
+    },
+    "after": {
+        "width": 199.391,
+        "height": 199.391,
+        "left": 1504.5,
+        "top": 399
+    }
+}
 ```
 
 ### Automatic Page Navigation Types
