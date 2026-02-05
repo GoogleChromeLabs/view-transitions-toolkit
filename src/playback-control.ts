@@ -67,27 +67,4 @@ export function scrub(vt: ViewTransition, progress: number): void {
   });
 }
 
-/*
-const transition = document.startViewTransition(() => {
-  updateDOM();
-});
-
-await transition.ready;
-
-// Pause immediately to freeze the transition on the first frame
-pause(transition);
-*/
-
-/*
-const rangeInput = document.querySelector("#scrubber") as HTMLInputElement;
-
-// Start the transition
-const transition = document.startViewTransition(() => updateTheDOM());
-await transition.ready;
-
-// Bind input change to scrub function
-rangeInput.addEventListener("input", (e) => {
-  const value = parseFloat((e.target as HTMLInputElement).value); // 0 to 1
-  scrubViewTransition(transition, value);
-});
-*/
+// @TODO: Add new method pauseUntil(vt: ViewTranistion, p: Promise)
