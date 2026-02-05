@@ -15,7 +15,7 @@ npm i view-transitions-toolkit
 Get information about whether certain View Transitions subfeatures are supported or not.
 
 ```js
-import { supports } from 'view-transitions-toolkit/feature-detection';
+import { supports } from "view-transitions-toolkit/feature-detection";
 console.log(supports);
 ```
 
@@ -38,7 +38,7 @@ Because of their different nature, installation is different for use with Same-D
 - Same-Document View Transitions: Invoke the following before you rely on `document.activeViewTransition`:
 
     ```js
-    import { trackActiveViewTransition } from 'view-transitions-toolkit/track-active-view-transition';
+    import { trackActiveViewTransition } "view-transitions-toolkit/track-active-view-transition";
     trackActiveViewTransition();
     ```
 
@@ -46,7 +46,7 @@ Because of their different nature, installation is different for use with Same-D
 
     ```html
     <script type="module" blocking="render">
-      import { trackActiveViewTransition } from "/dist/track-active-view-transition.js";
+      import { trackActiveViewTransition } from "view-transitions-toolkit/track-active-view-transition";
       window.trackActiveViewTransition = trackActiveViewTransition();
     </script>
     <script>
@@ -72,7 +72,7 @@ Get the animations linked to a View Transition
 - Get all animations:
 
     ```js
-    import { getAnimations } from 'view-transitions-toolkit/extract-animations';
+    import { getAnimations } from "view-transitions-toolkit/extract-animations";
 
     const t = document.startViewTransition(() => { … });
     await t.ready;
@@ -88,13 +88,13 @@ Get the animations linked to a View Transition
 - Get animations linked to a all VT-pseudos of a specific captured element (based on its `view-transition-name`):
 
     ```js
-    import { getAnimations } from 'view-transitions-toolkit/extract-animations';
+    import { getAnimations } from "view-transitions-toolkit/extract-animations";
 
     const t = document.startViewTransition(() => { … });
     await t.ready;
 
     // Get the animations linked to the box VT-pseudos
-    const animations = getAnimations(t, 'box');
+    const animations = getAnimations(t, "box");
     ```
 
     ```js
@@ -106,13 +106,13 @@ Get the animations linked to a View Transition
 - Get animations linked to a specific VT-pseudo of a specific captured element (based on its `view-transition-name`):
 
     ```js
-    import { getAnimations, ViewTransitionPart } from 'view-transitions-toolkit/extract-animations';
+    import { getAnimations, ViewTransitionPart } from "view-transitions-toolkit/extract-animations";
 
     const t = document.startViewTransition(() => { … });
     await t.ready;
 
     // Get the animations linked to the `::view-transition-group(box)` pseudo.
-    const animations = getAnimations(t, 'box', ViewTransitionPart.Group);
+    const animations = getAnimations(t, "box", ViewTransitionPart.Group);
     ```
 
     ```js
@@ -126,7 +126,7 @@ Get the animations linked to a View Transition
 Control the playback of a View Transition
 
 ```js
-import { pause, resume, scrub } from 'view-transitions-toolkit/playback-control';
+import { pause, resume, scrub } from "view-transitions-toolkit/playback-control";
 
 const t = document.startViewTransition(() => { … });
 await t.ready;
@@ -146,7 +146,7 @@ scrub(t, 0.5); // Sets all VT animations to 50% playback (and pauses them along 
 
 ```js
 import { getAnimations, ViewTransitionPart } from "view-transitions-toolkit/extract-animations";
-import { extractGeometry } from 'view-transitions-toolkit/extract-geometry';
+import { extractGeometry } from "view-transitions-toolkit/extract-geometry";
 
 const t = document.startViewTransition(() => { … });
 await t.ready;
