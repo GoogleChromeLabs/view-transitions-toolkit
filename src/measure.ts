@@ -58,8 +58,13 @@ export function extractGeometry(animation: CSSAnimation): {
 
   let rectBefore, rectAfter: ViewTransitionGeometry;
 
-  if (!startFrame.transform || !endFrame.transform) {
-    throw new Error("Transforms are missing");
+  // Safari 18 does not include transforms in the keyframes when the are "none".
+  // We therefore force them to that string (which is totally parseable by DOMMatrix())
+  if (!startFrame.transform) {
+    startFrame.transform = "none";
+  }
+  if (!endFrame.transform) {
+    endFrame.transform = "none";
   }
 
   // Build rect to represent the before position + size
