@@ -20,9 +20,9 @@ test.describe("util", () => {
     expect(
       extractViewTransitionName("::view-transition-image-pair(thing)"),
     ).toBe("thing");
-    expect(extractViewTransitionName("::view-transition-group-children(root)")).toBe(
-      "root",
-    );
+    expect(
+      extractViewTransitionName("::view-transition-group-children(root)"),
+    ).toBe("root");
     expect(extractViewTransitionName("::view-transition-foo(bar)")).toBe(null);
     expect(extractViewTransitionName("::view-transition-group()")).toBe(null);
     expect(extractViewTransitionName("not-a-vt-pseudo")).toBe(null);

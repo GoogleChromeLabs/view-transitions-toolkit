@@ -82,7 +82,9 @@ export function getAnimations(
     if (Array.isArray(identifier)) {
       filteredAnimations = filteredAnimations.filter((anim) => {
         const effect = anim.effect as KeyframeEffect;
-        const transitionName = extractViewTransitionName(effect.pseudoElement as string);
+        const transitionName = extractViewTransitionName(
+          effect.pseudoElement as string,
+        );
         return transitionName && identifier.includes(transitionName);
       });
     } else {

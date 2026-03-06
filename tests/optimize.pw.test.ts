@@ -14,9 +14,7 @@ test.describe("Animation Optimization", () => {
 
     // Start a VT and get the optimized animation names
     const optimizedNames = await page.evaluate(async () => {
-      const { optimizeGroupAnimations } = await import(
-        "/dist/optimize.js"
-      );
+      const { optimizeGroupAnimations } = await import("/dist/optimize.js");
 
       const t = document.startViewTransition(() => {});
       await t.ready;

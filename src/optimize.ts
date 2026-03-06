@@ -14,7 +14,7 @@ export const OPTIMIZATION_STRATEGY = {
 } as const;
 
 export type OptimizeStrategy =
-  typeof OPTIMIZATION_STRATEGY[keyof typeof OPTIMIZATION_STRATEGY];
+  (typeof OPTIMIZATION_STRATEGY)[keyof typeof OPTIMIZATION_STRATEGY];
 
 /**
  * Replaces the animation's keyframes with an optimized version.
@@ -109,7 +109,11 @@ export function optimizeGroupAnimations(
         optimizedViewTransitionNames.push(result);
       }
     } catch (err) {
-      console.warn("Failed to optimize view transition animation", animation, err);
+      console.warn(
+        "Failed to optimize view transition animation",
+        animation,
+        err,
+      );
     }
   });
 

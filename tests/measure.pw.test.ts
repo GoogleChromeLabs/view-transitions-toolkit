@@ -6,24 +6,31 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Animation Geometry Extraction", () => {
-  test("extractGeometry should return the correct boxes", async ({
-    page,
-  }) => {
+  test("extractGeometry should return the correct boxes", async ({ page }) => {
     // Go to the page with 3 boxes + root participating
     await page.goto("http://localhost:7357/tests/spa/boxes.html");
 
     // Start a VT and get the optimized animation names
     const geometries = await page.evaluate(async () => {
       const { extractGeometry } = await import("/dist/measure.js");
-      const { getAnimations, ViewTransitionPart } = await import("/dist/extract-animations.js");
+      const { getAnimations, ViewTransitionPart } =
+        await import("/dist/extract-animations.js");
 
       const t = document.startViewTransition(() => {
-        document.querySelector('#box1')?.classList.toggle('big');
+        document.querySelector("#box1")?.classList.toggle("big");
       });
       await t.ready;
 
-      const box1Animation = getAnimations(t, 'box1', ViewTransitionPart.Group)[0];
-      const box2Animation = getAnimations(t, 'box2', ViewTransitionPart.Group)[0];
+      const box1Animation = getAnimations(
+        t,
+        "box1",
+        ViewTransitionPart.Group,
+      )[0];
+      const box2Animation = getAnimations(
+        t,
+        "box2",
+        ViewTransitionPart.Group,
+      )[0];
 
       return {
         box1: extractGeometry(box1Animation),
