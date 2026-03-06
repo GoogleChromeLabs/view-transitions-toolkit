@@ -1,3 +1,4 @@
+import { extractViewTransitionName } from "./util.js";
 /**
  * Copyright 2026 Google LLC
  * SPDX-License-Identifier: Apache-2.0
@@ -31,7 +32,7 @@ interface ViewTransitionWithRoot extends ViewTransition {
  */
 export function getAnimations(
   vt: ViewTransition,
-  identifier: string = "*",
+  identifier: string | string[] = "*",
   part: ViewTransitionPart | null = null,
 ): CSSAnimation[] {
   // 1. Check if we have already cached the animations for this specific ViewTransition
@@ -78,17 +79,24 @@ export function getAnimations(
   // 3. Perform the cheap filter based on the identifier argument
   // This runs against the cached array, not the document
   if (identifier !== "*") {
-    if (!CSS.supports("view-transition-name", identifier)) {
-      throw new DOMException(
-        `'${identifier}' is not a valid view-transition-name.`,
-      );
+    if (Array.isArray(identifier)) {
+      filteredAnimations = filteredAnimations.filter((anim) => {
+        const effect = anim.effect as KeyframeEffect;
+        const transitionName = extractViewTransitionName(effect.pseudoElement as string);
+        return transitionName && identifier.includes(transitionName);
+      });
+    } else {
+      if (!CSS.supports("view-transition-name", identifier)) {
+        throw new DOMException(
+          `'${identifier}' is not a valid view-transition-name.`,
+        );
+      }
+      filteredAnimations = filteredAnimations.filter((anim) => {
+        // We know effect is KeyframeEffect from the cache step
+        const effect = anim.effect as KeyframeEffect;
+        return effect.pseudoElement?.includes(`(${identifier})`);
+      });
     }
-
-    filteredAnimations = filteredAnimations.filter((anim) => {
-      // We know effect is KeyframeEffect from the cache step
-      const effect = anim.effect as KeyframeEffect;
-      return effect.pseudoElement?.includes(`(${identifier})`);
-    });
   }
 
   // 4. Find the one that matches the specific pseudo-element part

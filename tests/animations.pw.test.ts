@@ -73,6 +73,44 @@ test.describe("Extract Animations", () => {
     expect(numAnimationsForElements.root).toBe(numAnimationsForOneElement);
   });
 
+  test("getAnimations should be able to filter using an array of identifiers", async ({
+    page,
+  }) => {
+    // Go to the page with only the root participating in the VT
+    await page.goto("http://localhost:7357/tests/spa/rootonly.html");
+
+    // Find out how many animations the browser creates per VT pseudo
+    // @note: this is (currently) 5, but that might change over time …
+    // So that’s why we determine it programmatically.
+    const numAnimationsForOneElement = await page.evaluate(async () => {
+      const { getAnimations } = await import("/dist/extract-animations.js");
+
+      const t = document.startViewTransition(() => {});
+      await t.ready;
+
+      return getAnimations(t).length;
+    });
+
+    // Go to the page with 3 boxes + root participating
+    await page.goto("http://localhost:7357/tests/spa/boxes.html");
+
+    // Start a VT and get the number
+    const numAnimationsForElements = await page.evaluate(async () => {
+      const { getAnimations } = await import("/dist/extract-animations.js");
+
+      const t = document.startViewTransition(() => {});
+      await t.ready;
+
+      return {
+        all: getAnimations(t).length,
+        boxes: getAnimations(t, ["box1", "box2", "box3"]).length,
+      };
+    });
+
+    expect(numAnimationsForElements.all).toBe(numAnimationsForOneElement * 4);
+    expect(numAnimationsForElements.boxes).toBe(numAnimationsForOneElement * 3);
+  });
+
   test("getAnimations should throw for an invalid identifier", async ({
     page,
   }) => {

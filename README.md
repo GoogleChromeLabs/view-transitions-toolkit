@@ -103,6 +103,24 @@ Get the animations linked to a View Transition
 
     The passed in value must be a valid `view-transition-name` value. Using `*` is also accepted, which is the equivalent of `getAnimations(viewTransition)`.
 
+- Get animations linked to a all VT-pseudos of a an array of specific captured elements (based on its `view-transition-name`):
+
+    ```js
+    import { getAnimations } from "view-transitions-toolkit/extract-animations";
+
+    const t = document.startViewTransition(() => { … });
+    await t.ready;
+
+    // Get the animations linked to the box1 and box2 VT-pseudos
+    const animations = getAnimations(t, ["box1", "box2"]);;
+    ```
+
+    ```js
+    // @TODO: Include Output here
+    ```
+
+    The passed in value must be an array with valid `view-transition-name` values.
+
 - Get animations linked to a specific VT-pseudo of a specific captured element (based on its `view-transition-name`):
 
     ```js
