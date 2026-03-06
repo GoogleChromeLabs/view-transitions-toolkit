@@ -7,17 +7,55 @@ import { extractGeometry, ViewTransitionGeometry } from "./measure.js";
 import { getAnimations, ViewTransitionPart } from "./extract-animations.js";
 
 /**
+ * Extracts the view transition name from a pseudo-element.
+ *
+ * @param pseudo - The pseudo-element to extract the name from.
+ * @returns The view transition name, or null if not found.
+ */
+export function extractViewTransitionName(
+  pseudo: string | undefined,
+): string | null {
+  if (!pseudo) {
+    return null;
+  }
+
+  const match = pseudo.match(
+    /^::view-transition-(?:root|group|group-children|image-pair|old|new)\(([^)]+)\)$/,
+  );
+  if (!match) {
+    return null;
+  }
+  return match[1] ?? null;
+}
+
+export const OPTIMIZATION_STRATEGY = {
+  NONE: "none",
+  SLIDE: "slide",
+  SCALE: "scale",
+} as const;
+
+export type OptimizeStrategy =
+  typeof OPTIMIZATION_STRATEGY[keyof typeof OPTIMIZATION_STRATEGY];
+
+/**
  * Replaces the animation's keyframes with an optimized version.
  * Instead of animating width/height (which triggers layout), it fixes the dimensions
  * to the 'end' state and uses a CSS scale transform to emulate the size change.
  *
  * @param animation - The CSSAnimation to optimize.
  * @param geometry - The geometry extracted via extractGeometry().
+ * @param strategy {OptimizeStrategy} - The optimization strategy to use.
  */
 export function optimizeAnimation(
   animation: CSSAnimation,
   geometry: { before: ViewTransitionGeometry; after: ViewTransitionGeometry },
-): void {
+  strategy: OptimizeStrategy = OPTIMIZATION_STRATEGY.SCALE,
+): boolean | string {
+  // Bail out if no strategy, or strategy is NONE
+  if (!strategy || strategy === OPTIMIZATION_STRATEGY.NONE) {
+    return false;
+  }
+
   const { before, after } = geometry;
   const effect = animation.effect as KeyframeEffect;
   const keyframes = effect.getKeyframes();
@@ -25,31 +63,34 @@ export function optimizeAnimation(
   // Bail out if there are no two keyframes
   if (keyframes.length !== 2) {
     console.warn("Optimize only works with 2 keyframes");
-    return;
+    return false;
   }
+
+  // Determine starting scale.
+  // If the strategy is SLIDE, we don't want to scale, so we force the scale to 1.
+  const scaleX =
+    strategy === OPTIMIZATION_STRATEGY.SLIDE ? 1 : before.width / after.width;
+  const scaleY =
+    strategy === OPTIMIZATION_STRATEGY.SLIDE ? 1 : before.height / after.height;
 
   // Build flip keyframes, copying over the easing from the existing effect
   // See https://www.bram.us/2025/03/04/view-transitions-snapshot-containing-block/ for details
-  // @TODO: Make scale transforms optional
   const flipKeyframes = {
     transform: [
-      `translate(${before.left}px,${before.top}px) scaleX(${before.width / after.width}) scaleY(${before.height / after.height})`,
+      `translate(${before.left}px,${before.top}px) scaleX(${scaleX}) scaleY(${scaleY})`,
       `translate(${after.left}px,${after.top}px) scaleX(1) scaleY(1)`,
     ],
     transformOrigin: ["0% 0%", "0% 0%"],
     easing: [keyframes[0].easing, keyframes[1].easing],
   };
 
-  // @TODO: This requires a tad of CSS …
-  // ::view-transition-new(*),
-  // ::view-transition-old(*) {
-  //   width: 100%;
-  //   height: 100%;
-  //   object-fit: fill;
-  // }
-
   // Write the new keyframes
   effect.setKeyframes(flipKeyframes);
+
+  const viewTransitionName = extractViewTransitionName(
+    effect.pseudoElement as string,
+  );
+  return viewTransitionName ?? false;
 }
 
 /**
@@ -58,7 +99,9 @@ export function optimizeAnimation(
 export function optimizeGroupAnimations(
   vt: ViewTransition,
   targets: "*" | string | string[],
-) {
+  strategy: OptimizeStrategy = OPTIMIZATION_STRATEGY.SCALE,
+): string[] {
+  const optimizedViewTransitionNames: string[] = [];
   // If targets is an array, loop over all targets and get the relevant group animation. Store it in a temp array
   let animationsToOptimize: CSSAnimation[] = [];
   if (Array.isArray(targets)) {
@@ -77,14 +120,19 @@ export function optimizeGroupAnimations(
     }
   }
 
-  if (!animationsToOptimize.length) return;
+  if (!animationsToOptimize.length) return optimizedViewTransitionNames;
 
-  animationsToOptimize.forEach((anim: CSSAnimation) => {
+  animationsToOptimize.forEach((animation: CSSAnimation) => {
     try {
-      const geometry = extractGeometry(anim);
-      optimizeAnimation(anim, geometry);
+      const geometry = extractGeometry(animation);
+      const result = optimizeAnimation(animation, geometry, strategy);
+      if (typeof result === "string") {
+        optimizedViewTransitionNames.push(result);
+      }
     } catch (err) {
-      console.warn("Failed to optimize view transition animation", anim, err);
+      console.warn("Failed to optimize view transition animation", animation, err);
     }
   });
+
+  return optimizedViewTransitionNames;
 }
