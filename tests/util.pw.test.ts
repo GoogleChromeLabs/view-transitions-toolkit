@@ -4,9 +4,9 @@
  */
 
 import { test, expect } from "@playwright/test";
-import { extractViewTransitionName } from "../src/optimize.js";
+import { extractViewTransitionName } from "../src/util.js";
 
-test.describe("optimize", () => {
+test.describe("util", () => {
   test("extractViewTransitionName", () => {
     expect(extractViewTransitionName("::view-transition-group(thing)")).toBe(
       "thing",

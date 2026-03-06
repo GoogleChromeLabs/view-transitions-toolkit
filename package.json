@@ -35,6 +35,10 @@
 		"./temp-names": {
 			"types": "./dist/temp-names.d.ts",
 			"import": "./dist/temp-names.js"
+		},
+		"./util": {
+			"types": "./dist/util.d.ts",
+			"import": "./dist/util.js"
 		}
 	},
 	"files": [

@@ -5,28 +5,7 @@
 
 import { extractGeometry, ViewTransitionGeometry } from "./measure.js";
 import { getAnimations, ViewTransitionPart } from "./extract-animations.js";
-
-/**
- * Extracts the view transition name from a pseudo-element.
- *
- * @param pseudo - The pseudo-element to extract the name from.
- * @returns The view transition name, or null if not found.
- */
-export function extractViewTransitionName(
-  pseudo: string | undefined,
-): string | null {
-  if (!pseudo) {
-    return null;
-  }
-
-  const match = pseudo.match(
-    /^::view-transition-(?:root|group|group-children|image-pair|old|new)\(([^)]+)\)$/,
-  );
-  if (!match) {
-    return null;
-  }
-  return match[1] ?? null;
-}
+import { extractViewTransitionName } from "./util.js";
 
 export const OPTIMIZATION_STRATEGY = {
   NONE: "none",
