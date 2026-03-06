@@ -1,4 +1,5 @@
 import { optimizeGroupAnimations } from "../js/optimize.js";
+import { getAnimations, ViewTransitionPart } from "../js/extract-animations.js";
 
 // Add intermittent Jank to the page
 setInterval(() => {
@@ -35,5 +36,17 @@ document.body.addEventListener("click", async (e) => {
     await t.ready;
 
     optimizeGroupAnimations(t, "box-flip");
+
+    // Dump the generated keyframes
+    const animations = getAnimations(t, "*", ViewTransitionPart.Group);
+    const animationKeyframes = {
+      regular: animations[0].effect.getKeyframes(),
+      flip: animations[1].effect.getKeyframes(),
+    };
+    document.getElementById("debug").innerText = JSON.stringify(
+      animationKeyframes,
+      null,
+      4,
+    );
   }
 });

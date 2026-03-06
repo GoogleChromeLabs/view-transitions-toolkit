@@ -11,20 +11,19 @@
   }
   #box-normal {
     view-transition-name: box-normal;
-    z-index: 2;
   }
   #box-flip {
     view-transition-name: box-flip;
-    z-index: 2;
   }
-  
-  .debug {
+
+  #debug {
     position: fixed;
-    outline: 1px solid hotpink;
-    
-    &#before {
-      background: #eee;
-    }
+    top: 0;
+    left: 0;
+    opacity: 0.5;
+    font-family: monospace;
+    padding: 0.2rem;
+    white-space: pre-wrap;
   }
 }
 

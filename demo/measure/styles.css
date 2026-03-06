@@ -13,14 +13,6 @@
     view-transition-name: box;
   }
   
-  .debug {
-    position: fixed;
-    outline: 1px solid hotpink;
-    
-    &#before {
-      background: #eee;
-    }
-  }
   #debug {
     position: fixed;
     opacity: 0.5;
