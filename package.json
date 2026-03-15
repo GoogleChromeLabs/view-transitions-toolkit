@@ -8,9 +8,9 @@
 			"types": "./dist/track-active-view-transition.d.ts",
 			"import": "./dist/track-active-view-transition.js"
 		},
-		"./auto-navigation-types": {
-			"types": "./dist/auto-navigation-types.d.ts",
-			"import": "./dist/auto-navigation-types.js"
+		"./navigation": {
+			"types": "./dist/navigation.d.ts",
+			"import": "./dist/navigation.js"
 		},
 		"./animations": {
 			"types": "./dist/animations.d.ts",

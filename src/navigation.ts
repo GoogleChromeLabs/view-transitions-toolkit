@@ -51,7 +51,7 @@ function getRouteName(
  *
  * @param routeMap - Dictionary of route names to URLPattern strings.
  */
-export function installAutomaticViewTransitionTypes(routeMap: RouteMap): void {
+export function useAutoTypes(routeMap: RouteMap): void {
   // Safety check for SSR or unsupported browsers
   if (typeof window === "undefined" || !("ViewTransition" in window)) return;
 
