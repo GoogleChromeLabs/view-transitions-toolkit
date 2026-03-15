@@ -32,10 +32,6 @@
 			"types": "./dist/playback-control.d.ts",
 			"import": "./dist/playback-control.js"
 		},
-		"./temp-names": {
-			"types": "./dist/temp-names.d.ts",
-			"import": "./dist/temp-names.js"
-		},
 		"./util": {
 			"types": "./dist/util.d.ts",
 			"import": "./dist/util.js"
