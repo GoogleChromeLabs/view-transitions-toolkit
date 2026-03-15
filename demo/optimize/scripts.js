@@ -1,4 +1,8 @@
-import { optimizeGroupAnimations, getAnimations, ViewTransitionPart } from "../js/animations.js";
+import {
+  optimizeGroupAnimations,
+  getAnimations,
+  ViewTransitionPart,
+} from "../js/animations.js";
 
 // Add intermittent Jank to the page
 setInterval(() => {

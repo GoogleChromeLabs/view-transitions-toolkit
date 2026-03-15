@@ -1,22 +1,27 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Navigation Types", () => {
-  test.skip(({ browserName }) => browserName !== 'chromium', 'Requires Chrome 126+');
+  test.skip(
+    ({ browserName }) => browserName !== "chromium",
+    "Requires Chrome 126+",
+  );
 
-  test("should apply types and style boxes during transition", async ({ page }) => {
+  test("should apply types and style boxes during transition", async ({
+    page,
+  }) => {
     // Log window.navigation status
-    page.on('domcontentloaded', async () => {
-        const status = await page.evaluate(() => {
-            const win = window as any;
-            return {
-                hasNav: !!win.navigation,
-                hasActivation: !!win.navigation?.activation,
-                hasFrom: !!win.navigation?.activation?.from,
-                fromUrl: win.navigation?.activation?.from?.url,
-                currentUrl: window.win?.location.href || window.location.href, // Fallback just in case
-            };
-        });
-        // console.log("PAGE LOG: Nav Status:", status);
+    page.on("domcontentloaded", async () => {
+      const status = await page.evaluate(() => {
+        const win = window as any;
+        return {
+          hasNav: !!win.navigation,
+          hasActivation: !!win.navigation?.activation,
+          hasFrom: !!win.navigation?.activation?.from,
+          fromUrl: win.navigation?.activation?.from?.url,
+          currentUrl: window.win?.location.href || window.location.href, // Fallback just in case
+        };
+      });
+      // console.log("PAGE LOG: Nav Status:", status);
     });
 
     // Add style tag before navigation?
@@ -27,13 +32,13 @@ test.describe("Navigation Types", () => {
 
     // Add init script to slow down VT animations
     await page.addInitScript(() => {
-        const style = document.createElement('style');
-        style.textContent = `
+      const style = document.createElement("style");
+      style.textContent = `
             ::view-transition-group(*) {
                 animation-duration: 10s !important;
             }
         `;
-        document.head.appendChild(style);
+      document.head.appendChild(style);
     });
 
     // Log network requests
@@ -41,42 +46,44 @@ test.describe("Navigation Types", () => {
 
     // Add init script to slow down VT animations
     await page.addInitScript(() => {
-        const style = document.createElement('style');
-        style.textContent = `
+      const style = document.createElement("style");
+      style.textContent = `
             ::view-transition-group(*) {
                 animation-duration: 10s !important;
             }
         `;
-        document.head.appendChild(style);
+      document.head.appendChild(style);
     });
 
     // Go to the demo home page
     await page.goto("http://localhost:7357/demo/navigation-types/");
 
     // Verify initial state (no transition types active, boxes should be white)
-    const fromBox = page.locator('.from');
-    const toBox = page.locator('.to');
+    const fromBox = page.locator(".from");
+    const toBox = page.locator(".to");
 
-    await expect(fromBox).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-    await expect(toBox).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+    await expect(fromBox).toHaveCSS("background-color", "rgb(255, 255, 255)");
+    await expect(toBox).toHaveCSS("background-color", "rgb(255, 255, 255)");
 
     // Add init script to capture transition styles
     await page.addInitScript(() => {
-        window.addEventListener('pagereveal', (e: any) => {
-            if (e.viewTransition) {
-                // Wait for next frame (or task) to let useAutoTypes run and styles apply
-                setTimeout(() => {
-                    const fromBox = document.querySelector('.from');
-                    const toBox = document.querySelector('.to');
-                    
-                    (window as any).testResult = {
-                        fromColor: fromBox ? getComputedStyle(fromBox).backgroundColor : 'null',
-                        toColor: toBox ? getComputedStyle(toBox).backgroundColor : 'null',
-                        types: Array.from(e.viewTransition.types || []),
-                    };
-                }, 100); // 100ms should be safe
-            }
-        });
+      window.addEventListener("pagereveal", (e: any) => {
+        if (e.viewTransition) {
+          // Wait for next frame (or task) to let useAutoTypes run and styles apply
+          setTimeout(() => {
+            const fromBox = document.querySelector(".from");
+            const toBox = document.querySelector(".to");
+
+            (window as any).testResult = {
+              fromColor: fromBox
+                ? getComputedStyle(fromBox).backgroundColor
+                : "null",
+              toColor: toBox ? getComputedStyle(toBox).backgroundColor : "null",
+              types: Array.from(e.viewTransition.types || []),
+            };
+          }, 100); // 100ms should be safe
+        }
+      });
     });
 
     // Go to the demo home page
@@ -85,15 +92,17 @@ test.describe("Navigation Types", () => {
     // Verify initial state (no transition types active, boxes should be white)
     // fromBox and toBox are already declared earlier
 
-    await expect(fromBox).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-    await expect(toBox).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+    await expect(fromBox).toHaveCSS("background-color", "rgb(255, 255, 255)");
+    await expect(toBox).toHaveCSS("background-color", "rgb(255, 255, 255)");
 
     // Click 'Detail 1' via Playwright
     // Wait, use relative link from the current page
     await page.locator('a[href="./detail/1"]').click();
 
     // Wait for the test result to be available
-    await page.waitForFunction(() => (window as any).testResult !== undefined, { timeout: 10000 });
+    await page.waitForFunction(() => (window as any).testResult !== undefined, {
+      timeout: 10000,
+    });
 
     // Get the result
     const result = await page.evaluate(() => (window as any).testResult);
@@ -104,12 +113,12 @@ test.describe("Navigation Types", () => {
     // Home -> Detail 1
     // from: index -> from-index should be active
     // to: detail -> to-detail should be active
-    expect(result.fromColor).toBe('rgb(240, 240, 240)');
-    expect(result.toColor).toBe('rgb(224, 240, 255)');
+    expect(result.fromColor).toBe("rgb(240, 240, 240)");
+    expect(result.toColor).toBe("rgb(224, 240, 255)");
 
     // We can also check types directly
-    expect(result.types).toContain('from-index');
-    expect(result.types).toContain('to-detail');
+    expect(result.types).toContain("from-index");
+    expect(result.types).toContain("to-detail");
 
     // Check colors on the new page (Detail 1)
     // Home -> Detail 1
@@ -139,21 +148,23 @@ test.describe("Navigation Types", () => {
     // So BOTH styles should apply!
     // This is a great test!
 
-    await expect(fromBox).toHaveCSS('background-color', 'rgb(240, 240, 240)');
-    await expect(toBox).toHaveCSS('background-color', 'rgb(224, 240, 255)');
+    await expect(fromBox).toHaveCSS("background-color", "rgb(240, 240, 240)");
+    await expect(toBox).toHaveCSS("background-color", "rgb(224, 240, 255)");
 
     // Now navigate back to Home?
     // Detail 1 -> Home
     // from: detail -> from-detail should be active
     // to: index -> to-index should be active
     // Reset testResult for next transition
-    await page.evaluate(() => (window as any).testResult = undefined);
+    await page.evaluate(() => ((window as any).testResult = undefined));
 
     // Click 'Home' via relative link
     await page.locator('a[href="../"]').click();
 
     // Wait for the test result to be available
-    await page.waitForFunction(() => (window as any).testResult !== undefined, { timeout: 10000 });
+    await page.waitForFunction(() => (window as any).testResult !== undefined, {
+      timeout: 10000,
+    });
 
     // Get the result
     const nextResult = await page.evaluate(() => (window as any).testResult);
@@ -164,16 +175,19 @@ test.describe("Navigation Types", () => {
     // Detail 1 -> Home
     // from: detail -> from-detail should be active
     // to: index -> to-index should be active
-    expect(nextResult.fromColor).toBe('rgb(224, 240, 255)');
-    expect(nextResult.toColor).toBe('rgb(240, 240, 240)');
+    expect(nextResult.fromColor).toBe("rgb(224, 240, 255)");
+    expect(nextResult.toColor).toBe("rgb(240, 240, 240)");
 
     // We can also check types directly
-    expect(nextResult.types).toContain('from-detail');
-    expect(nextResult.types).toContain('to-index');
+    expect(nextResult.types).toContain("from-detail");
+    expect(nextResult.types).toContain("to-index");
 
     // On Home page, boxes should be white again
-    await expect(fromBox).toHaveCSS('background-color', 'rgb(255, 255, 255)', { timeout: 10000 });
-    await expect(toBox).toHaveCSS('background-color', 'rgb(255, 255, 255)', { timeout: 10000 });
-
+    await expect(fromBox).toHaveCSS("background-color", "rgb(255, 255, 255)", {
+      timeout: 10000,
+    });
+    await expect(toBox).toHaveCSS("background-color", "rgb(255, 255, 255)", {
+      timeout: 10000,
+    });
   });
 });

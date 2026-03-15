@@ -1,4 +1,8 @@
-import { getAnimations, ViewTransitionPart, extractGeometry } from "../js/animations.js";
+import {
+  getAnimations,
+  ViewTransitionPart,
+  extractGeometry,
+} from "../js/animations.js";
 
 const positions = ["start", "end", "center"];
 
