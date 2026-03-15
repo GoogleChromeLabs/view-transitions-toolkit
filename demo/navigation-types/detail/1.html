@@ -8,11 +8,11 @@
 <body>
     <h1>Detail 1</h1>
     <nav>
-        <a href="/navigation-types/">Home</a>
-        <a href="/navigation-types/detail/1">Detail 1</a>
-        <a href="/navigation-types/detail/2">Detail 2</a>
-        <a href="/navigation-types/detail/3">Detail 3</a>
-        <a href="/navigation-types/about">About</a>
+        <a href="../">Home</a>
+        <a href="../detail/1">Detail 1</a>
+        <a href="../detail/2">Detail 2</a>
+        <a href="../detail/3">Detail 3</a>
+        <a href="../about">About</a>
     </nav>
     <div class="from">From Box</div>
     <div class="to">To Box</div>
@@ -21,10 +21,11 @@
     <script type="module">
         import { useAutoTypes } from '../../js/navigation.js';
         
+        const basePath = window.location.pathname.startsWith('/demo') ? '/demo' : '';
         const routeMap = {
-            "index": "/navigation-types/",
-            "detail": "/navigation-types/detail/:id",
-            "about": "/navigation-types/about"
+            "index": `${basePath}/navigation-types/`,
+            "detail": `${basePath}/navigation-types/detail/:id`,
+            "about": `${basePath}/navigation-types/about`
         };
         
         useAutoTypes(routeMap);

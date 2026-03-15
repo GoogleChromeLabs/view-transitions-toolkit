@@ -2,11 +2,11 @@ body { font-family: sans-serif; padding: 20px; }
 nav { margin-bottom: 20px; }
 nav a { margin-right: 10px; }
 
-a[href="/navigation-types/"] { background-color: #f0f0f0; }
-a[href="/navigation-types/detail/1"] { background-color: #e0f0ff; }
-a[href="/navigation-types/detail/2"] { background-color: #e0f0ff; }
-a[href="/navigation-types/detail/3"] { background-color: #e0f0ff; }
-a[href="/navigation-types/about"] { background-color: #fff0f0; }
+a[href$="/"] { background-color: #f0f0f0; }
+a[href$="/detail/1"] { background-color: #e0f0ff; }
+a[href$="/detail/2"] { background-color: #e0f0ff; }
+a[href$="/detail/3"] { background-color: #e0f0ff; }
+a[href$="/about"] { background-color: #fff0f0; }
 
 .from, .to {
     width: 100px;
