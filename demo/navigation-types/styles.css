@@ -1,0 +1,34 @@
+body { font-family: sans-serif; padding: 20px; }
+nav { margin-bottom: 20px; }
+nav a { margin-right: 10px; }
+
+a[href="/navigation-types/"] { background-color: #f0f0f0; }
+a[href="/navigation-types/detail/1"] { background-color: #e0f0ff; }
+a[href="/navigation-types/detail/2"] { background-color: #e0f0ff; }
+a[href="/navigation-types/detail/3"] { background-color: #e0f0ff; }
+a[href="/navigation-types/about"] { background-color: #fff0f0; }
+
+.from, .to {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+    background-color: white;
+    vertical-align: middle;
+}
+
+@view-transition { navigation: auto; }
+
+:active-view-transition-type(from-index) .from { background-color: #f0f0f0; }
+:active-view-transition-type(to-index) .to { background-color: #f0f0f0; }
+
+:active-view-transition-type(from-detail) .from { background-color: #e0f0ff; }
+:active-view-transition-type(to-detail) .to { background-color: #e0f0ff; }
+
+:active-view-transition-type(from-about) .from { background-color: #fff0f0; }
+:active-view-transition-type(to-about) .to { background-color: #fff0f0; }
+
+::view-transition-group(*) { animation-duration: 1s; }
