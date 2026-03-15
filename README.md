@@ -271,6 +271,7 @@ This utility listens for `pageswap` and `pagereveal` events and uses a `routeMap
 
 #### Example
 
+
 ```js
 import { useAutoTypes } from "view-transitions-toolkit/navigation";
 
@@ -284,6 +285,25 @@ const routeMap = {
 // Initialize the automatic types
 useAutoTypes(routeMap);
 ```
+
+> [!IMPORTANT]
+> To use `useAutoTypes`, you MUST put this code in a render blocking module.
+> 
+> You can do either:
+> 
+> ```html
+> <script type="module" src="script.js" blocking="render" async></script>
+> ```
+> 
+> Or:
+> 
+> ```html
+> <script type="module" blocking="render" async>
+> import { useAutoTypes } from "view-transitions-toolkit/navigation";
+> 
+> …
+> </script>
+> ```
 
 In your CSS, you can then target these types using the `:active-view-transition-type` pseudo-class:
 
