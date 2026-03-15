@@ -12,9 +12,7 @@ test.describe("Animation Geometry Extraction", () => {
 
     // Start a VT and get the optimized animation names
     const geometries = await page.evaluate(async () => {
-      const { extractGeometry } = await import("/dist/measure.js");
-      const { getAnimations, ViewTransitionPart } =
-        await import("/dist/extract-animations.js");
+      const { extractGeometry, getAnimations, ViewTransitionPart } = await import("/dist/animations.js");
 
       const t = document.startViewTransition(() => {
         document.querySelector("#box1")?.classList.toggle("big");

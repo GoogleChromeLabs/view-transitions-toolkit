@@ -12,7 +12,7 @@ test.describe("Extract Animations", () => {
 
     // Start a VT and get some numbers
     const result = await page.evaluate(async () => {
-      const { getAnimations } = await import("/dist/extract-animations.js");
+      const { getAnimations } = await import("/dist/animations.js");
 
       const numAnimationsBefore = document.getAnimations().length;
 
@@ -45,7 +45,7 @@ test.describe("Extract Animations", () => {
     // @note: this is (currently) 5, but that might change over time …
     // So that’s why we determine it programmatically.
     const numAnimationsForOneElement = await page.evaluate(async () => {
-      const { getAnimations } = await import("/dist/extract-animations.js");
+      const { getAnimations } = await import("/dist/animations.js");
 
       const t = document.startViewTransition(() => {});
       await t.ready;
@@ -58,7 +58,7 @@ test.describe("Extract Animations", () => {
 
     // Start a VT and get the number
     const numAnimationsForElements = await page.evaluate(async () => {
-      const { getAnimations } = await import("/dist/extract-animations.js");
+      const { getAnimations } = await import("/dist/animations.js");
 
       const t = document.startViewTransition(() => {});
       await t.ready;
@@ -83,7 +83,7 @@ test.describe("Extract Animations", () => {
     // @note: this is (currently) 5, but that might change over time …
     // So that’s why we determine it programmatically.
     const numAnimationsForOneElement = await page.evaluate(async () => {
-      const { getAnimations } = await import("/dist/extract-animations.js");
+      const { getAnimations } = await import("/dist/animations.js");
 
       const t = document.startViewTransition(() => {});
       await t.ready;
@@ -96,7 +96,7 @@ test.describe("Extract Animations", () => {
 
     // Start a VT and get the number
     const numAnimationsForElements = await page.evaluate(async () => {
-      const { getAnimations } = await import("/dist/extract-animations.js");
+      const { getAnimations } = await import("/dist/animations.js");
 
       const t = document.startViewTransition(() => {});
       await t.ready;
@@ -119,7 +119,7 @@ test.describe("Extract Animations", () => {
 
     // Start a VT and try to get animations with invalid identifiers
     const result = await page.evaluate(async () => {
-      const { getAnimations } = await import("/dist/extract-animations.js");
+      const { getAnimations } = await import("/dist/animations.js");
 
       const t = document.startViewTransition(() => {});
       await t.ready;
@@ -157,7 +157,7 @@ test.describe("Extract Animations", () => {
     // Start a VT and get the number of animations
     const result = await page.evaluate(async () => {
       const { getAnimations, ViewTransitionPart } =
-        await import("/dist/extract-animations.js");
+        await import("/dist/animations.js");
 
       const t = document.startViewTransition(() => {});
       await t.ready;

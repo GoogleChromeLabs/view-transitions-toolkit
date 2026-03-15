@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { getAnimations } from "./extract-animations.js";
+import { getAnimations } from "./animations.js";
 
 /**
  * Pauses the View Transition by pausing all animations associated with the current View Transition.

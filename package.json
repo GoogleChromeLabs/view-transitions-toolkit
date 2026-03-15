@@ -12,21 +12,13 @@
 			"types": "./dist/auto-navigation-types.d.ts",
 			"import": "./dist/auto-navigation-types.js"
 		},
-		"./extract-animations": {
-			"types": "./dist/extract-animations.d.ts",
-			"import": "./dist/extract-animations.js"
+		"./animations": {
+			"types": "./dist/animations.d.ts",
+			"import": "./dist/animations.js"
 		},
 		"./feature-detection": {
 			"types": "./dist/feature-detection.d.ts",
 			"import": "./dist/feature-detection.js"
-		},
-		"./measure": {
-			"types": "./dist/measure.d.ts",
-			"import": "./dist/measure.js"
-		},
-		"./optimize": {
-			"types": "./dist/optimize.d.ts",
-			"import": "./dist/optimize.js"
 		},
 		"./playback-control": {
 			"types": "./dist/playback-control.d.ts",

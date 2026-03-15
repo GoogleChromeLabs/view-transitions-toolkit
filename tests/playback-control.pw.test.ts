@@ -4,7 +4,7 @@
  */
 
 import { test, expect } from "@playwright/test";
-import { ViewTransitionPart } from "../src/extract-animations.js";
+import { ViewTransitionPart } from "../src/animations.js";
 
 test.describe("Playback Control", () => {
   test("It should correctly play/pause/scrub a transition", async ({
@@ -17,7 +17,7 @@ test.describe("Playback Control", () => {
     const result = await page.evaluate(async (viewTransitionPartGroup) => {
       const { pause, resume, scrub } =
         await import("/dist/playback-control.js");
-      const { getAnimations } = await import("/dist/extract-animations.js");
+      const { getAnimations } = await import("/dist/animations.js");
 
       let progressAtPause = -1;
       let progressAtScrub = -1;

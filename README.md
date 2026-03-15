@@ -72,7 +72,7 @@ Get the animations linked to a View Transition
 - Get all animations:
 
     ```js
-    import { getAnimations } from "view-transitions-toolkit/extract-animations";
+    import { getAnimations } from "view-transitions-toolkit/animations";
 
     const t = document.startViewTransition(() => { … });
     await t.ready;
@@ -88,7 +88,7 @@ Get the animations linked to a View Transition
 - Get animations linked to a all VT-pseudos of a specific captured element (based on its `view-transition-name`):
 
     ```js
-    import { getAnimations } from "view-transitions-toolkit/extract-animations";
+    import { getAnimations } from "view-transitions-toolkit/animations";
 
     const t = document.startViewTransition(() => { … });
     await t.ready;
@@ -106,7 +106,7 @@ Get the animations linked to a View Transition
 - Get animations linked to a all VT-pseudos of a an array of specific captured elements (based on its `view-transition-name`):
 
     ```js
-    import { getAnimations } from "view-transitions-toolkit/extract-animations";
+    import { getAnimations } from "view-transitions-toolkit/animations";
 
     const t = document.startViewTransition(() => { … });
     await t.ready;
@@ -124,7 +124,7 @@ Get the animations linked to a View Transition
 - Get animations linked to a specific VT-pseudo of a specific captured element (based on its `view-transition-name`):
 
     ```js
-    import { getAnimations, ViewTransitionPart } from "view-transitions-toolkit/extract-animations";
+    import { getAnimations, ViewTransitionPart } from "view-transitions-toolkit/animations";
 
     const t = document.startViewTransition(() => { … });
     await t.ready;
@@ -157,8 +157,7 @@ scrub(t, 0.5); // Sets all VT animations to 50% playback (and pauses them along 
 ### Measuring Tools
 
 ```js
-import { getAnimations, ViewTransitionPart } from "view-transitions-toolkit/extract-animations";
-import { extractGeometry } from "view-transitions-toolkit/extract-geometry";
+import { getAnimations, ViewTransitionPart, extractGeometry } from "view-transitions-toolkit/animations";
 
 const t = document.startViewTransition(() => { … });
 await t.ready;
@@ -203,7 +202,7 @@ The default is `OPTIMIZATION_STRATEGY.SCALE`, as that is the most performant. It
 #### Automatically optimizing all `::view-transition-group` animations
 
 ```js
-import { optimizeGroupAnimations, OPTIMIZATION_STRATEGY } from "view-transitions-toolkit/optimize";
+import { optimizeGroupAnimations, OPTIMIZATION_STRATEGY } from "view-transitions-toolkit/animations";
 
 const t = document.startViewTransition(() => { … });
 await t.ready;
@@ -222,9 +221,7 @@ console.log(optimizedNames); // e.g., ['root', 'box-flip']
 #### Manually optimizing all `::view-transition-group` animations
 
 ```js
-import { getAnimations, ViewTransitionPart } from "view-transitions-toolkit/extract-animations";
-import { extractGeometry } from "view-transitions-toolkit/measure";
-import { optimizeAnimation } from "view-transitions-toolkit/optimize";
+import { getAnimations, ViewTransitionPart, extractGeometry, optimizeAnimation } from "view-transitions-toolkit/animations";
 
 const t = document.startViewTransition(() => { … });
 await t.ready;
@@ -253,7 +250,7 @@ If you don’t want to apply this broad CSS to _all_ `::view-transition-old` and
 When manually calling `optimizeGroupAnimation`, the result of that function is the name of the group that was optimized. If no group was optimized, the result is `false`.
 
 ```js
-import { optimizeGroupAnimations } from "view-transitions-toolkit/optimize";
+import { optimizeGroupAnimations } from "view-transitions-toolkit/animations";
 
 const t = document.startViewTransition(() => { … });
 await t.ready;
