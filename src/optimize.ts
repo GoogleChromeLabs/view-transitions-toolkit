@@ -5,7 +5,7 @@
 
 import { extractGeometry, ViewTransitionGeometry } from "./measure.js";
 import { getAnimations, ViewTransitionPart } from "./extract-animations.js";
-import { extractViewTransitionName } from "./util.js";
+import { extractViewTransitionName } from "./misc.js";
 
 export const OPTIMIZATION_STRATEGY = {
   NONE: "none",

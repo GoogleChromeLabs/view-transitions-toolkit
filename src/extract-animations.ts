@@ -1,4 +1,4 @@
-import { extractViewTransitionName } from "./util.js";
+import { extractViewTransitionName } from "./misc.js";
 /**
  * Copyright 2026 Google LLC
  * SPDX-License-Identifier: Apache-2.0

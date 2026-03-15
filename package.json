@@ -32,9 +32,9 @@
 			"types": "./dist/playback-control.d.ts",
 			"import": "./dist/playback-control.js"
 		},
-		"./util": {
-			"types": "./dist/util.d.ts",
-			"import": "./dist/util.js"
+		"./misc": {
+			"types": "./dist/misc.d.ts",
+			"import": "./dist/misc.js"
 		}
 	},
 	"files": [
