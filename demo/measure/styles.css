@@ -1,3 +1,8 @@
+/**
+ * Copyright 2026 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 @import "https://unpkg.com/open-props" layer(design.system);
 @import "https://unpkg.com/open-props/normalize.min.css" layer(demo.support);
 
