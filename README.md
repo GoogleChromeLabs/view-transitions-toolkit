@@ -400,7 +400,7 @@ npm run dev
 
 ## License
 
-`view-transitions-utilities` is released under the Apache 2.0 License. See the enclosed [`LICENSE`](./LICENSE) for details.
+`view-transitions-toolkit` is released under the Apache 2.0 License. See the enclosed [`LICENSE`](./LICENSE) for details.
 
 ## Contributing
 
