@@ -404,7 +404,7 @@ npm run dev
 
 ## Contributing
 
-We'd love to accept your patches and contributions to this project. See the enclosed [`CONTRIBUTING`](./CONTRIBUTING) for details.
+We'd love to accept your patches and contributions to this project. See the enclosed [`CONTRIBUTING`](./CONTRIBUTING.md) for details.
 
 ## Disclaimer
 
