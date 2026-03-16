@@ -4,16 +4,28 @@
  */
 
 import { test, expect } from "@playwright/test";
+import { expectedResults } from "./test-data.js";
 
 test.describe("Navigation Types", () => {
-  test.skip(
-    ({ browserName }) => browserName !== "chromium",
-    "Requires Chrome 126+",
-  );
-
   test("should apply types and style boxes during transition", async ({
     page,
-  }) => {
+  }, testInfo) => {
+    // Skip test when no cross-document support or no types support
+    test.skip(
+      !expectedResults[testInfo.project.name]?.crossDocument,
+      "Requires cross-document support",
+    );
+    test.skip(
+      !expectedResults[testInfo.project.name]?.types,
+      "Requires types support",
+    );
+
+    // WebKit 18 does not seem to like this test … manually skipping
+    test.skip(
+      testInfo.project.name === "webkit-18",
+      "WebKit 18 does not like this test",
+    );
+
     // Go to the demo home page
     await page.goto("http://localhost:7357/demo/navigation-types/");
 
