@@ -43,15 +43,15 @@ export default defineConfig({
   fullyParallel: true,
   projects: [
     {
-      name: 'chromium',
+      name: 'chromium-145',
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'firefox',
+      name: 'firefox-146',
       use: { ...devices['Desktop Firefox'] },
     },
     {
-      name: 'webkit',
+      name: 'webkit-26',
       use: { ...devices['Desktop Safari'] },
     },
     {

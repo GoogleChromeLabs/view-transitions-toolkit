@@ -16,21 +16,21 @@ export type SupportsMatrix = {
 };
 
 export const expectedResults: SupportsMatrix = {
-  chromium: {
+  "chromium-145": {
     sameDocument: true,
     types: true,
     crossDocument: true,
     elementScoped: false,
     activeViewTransition: true,
   },
-  firefox: {
+  "firefox-146": {
     sameDocument: true,
     types: false,
     crossDocument: false,
     elementScoped: false,
     activeViewTransition: false,
   },
-  webkit: {
+  "webkit-26": {
     sameDocument: true,
     types: true,
     crossDocument: true,
