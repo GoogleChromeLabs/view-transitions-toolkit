@@ -30,7 +30,10 @@
         }
     },
     "files": [
-        "dist"
+        "dist",
+        "docs",
+        "LICENSE",
+        "README.md"
     ],
     "scripts": {
         "clean:dist": "rm -rf ./dist",
