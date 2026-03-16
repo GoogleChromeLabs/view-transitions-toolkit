@@ -14,41 +14,6 @@ test.describe("Navigation Types", () => {
   test("should apply types and style boxes during transition", async ({
     page,
   }) => {
-    // Add init script to capture transition types
-    await page.addInitScript(() => {
-      window.addEventListener("pageswap", (e: any) => {
-        if (e.viewTransition) {
-          setTimeout(() => {
-            localStorage.setItem(
-              "pageswapResult",
-              JSON.stringify({
-                types: e.viewTransition.types
-                  ? Array.from(e.viewTransition.types)
-                  : [],
-                url: window.location.href,
-              }),
-            );
-          }, 0);
-        }
-      });
-
-      window.addEventListener("pagereveal", (e: any) => {
-        if (e.viewTransition) {
-          setTimeout(() => {
-            localStorage.setItem(
-              "pagerevealResult",
-              JSON.stringify({
-                types: e.viewTransition.types
-                  ? Array.from(e.viewTransition.types)
-                  : [],
-                url: window.location.href,
-              }),
-            );
-          }, 0);
-        }
-      });
-    });
-
     // Go to the demo home page
     await page.goto("http://localhost:7357/demo/navigation-types/");
 

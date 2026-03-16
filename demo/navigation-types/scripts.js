@@ -13,3 +13,28 @@ const routeMap = {
 };
 
 useAutoTypes(routeMap);
+
+// For debugging purposes:
+window.addEventListener("pageswap", (e) => {
+  if (e.viewTransition) {
+    localStorage.setItem(
+      "pageswapResult",
+      JSON.stringify({
+        types: e.viewTransition.types ? Array.from(e.viewTransition.types) : [],
+        url: window.location.href,
+      }),
+    );
+  }
+});
+
+window.addEventListener("pagereveal", (e) => {
+  if (e.viewTransition) {
+    localStorage.setItem(
+      "pagerevealResult",
+      JSON.stringify({
+        types: e.viewTransition.types ? Array.from(e.viewTransition.types) : [],
+        url: window.location.href,
+      }),
+    );
+  }
+});
