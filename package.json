@@ -3,35 +3,35 @@
     "version": "0.0.1",
     "description": "A collection of utility functions to more easily work with View Transitions",
     "type": "module",
-	"exports": {
-		"./track-active-view-transition": {
-			"types": "./dist/track-active-view-transition.d.ts",
-			"import": "./dist/track-active-view-transition.js"
-		},
-		"./navigation": {
-			"types": "./dist/navigation.d.ts",
-			"import": "./dist/navigation.js"
-		},
-		"./animations": {
-			"types": "./dist/animations.d.ts",
-			"import": "./dist/animations.js"
-		},
-		"./feature-detection": {
-			"types": "./dist/feature-detection.d.ts",
-			"import": "./dist/feature-detection.js"
-		},
-		"./playback-control": {
-			"types": "./dist/playback-control.d.ts",
-			"import": "./dist/playback-control.js"
-		},
-		"./misc": {
-			"types": "./dist/misc.d.ts",
-			"import": "./dist/misc.js"
-		}
-	},
-	"files": [
-		"dist"
-	],
+    "exports": {
+        "./track-active-view-transition": {
+            "types": "./dist/track-active-view-transition.d.ts",
+            "import": "./dist/track-active-view-transition.js"
+        },
+        "./navigation": {
+            "types": "./dist/navigation.d.ts",
+            "import": "./dist/navigation.js"
+        },
+        "./animations": {
+            "types": "./dist/animations.d.ts",
+            "import": "./dist/animations.js"
+        },
+        "./feature-detection": {
+            "types": "./dist/feature-detection.d.ts",
+            "import": "./dist/feature-detection.js"
+        },
+        "./playback-control": {
+            "types": "./dist/playback-control.d.ts",
+            "import": "./dist/playback-control.js"
+        },
+        "./misc": {
+            "types": "./dist/misc.d.ts",
+            "import": "./dist/misc.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "clean:dist": "rm -rf ./dist",
         "clean:demo": "rm -rf ./demo/js && mkdir -p ./demo/js && touch ./demo/js/.gitkeep",
@@ -42,7 +42,7 @@
         "start": "concurrently --kill-others 'npm run watch' 'npm run serve'",
         "prewatch": "npm run clean:demo",
         "watch": "tsc --outDir './demo/js' --watch",
-		"serve": "http-server demo -p 3000 -d false --no-dotfiles",
+        "serve": "http-server demo -p 3000 -d false --no-dotfiles",
         "prepack": "npm run require-license-headers && npm run require-pristine-tree && npm run test",
         "prepublish": "npm run build",
         "type-check": "tsc --noEmit",
@@ -52,7 +52,7 @@
         "pretest:install-webkit-18": "if [ ! -d './custom-browsers/webkit-2182' ]; then PLAYWRIGHT_BROWSERS_PATH=./custom-browsers npx --yes playwright@1.53 install webkit; fi",
         "pretest:install-firefox-142": "if [ ! -d './custom-browsers/firefox-1495' ]; then PLAYWRIGHT_BROWSERS_PATH=./custom-browsers npx --yes playwright@1.56 install firefox; fi",
         "test": "playwright test",
-		"test:serve": "http-server . -p 7357 -d false --no-dotfiles",
+        "test:serve": "http-server . -p 7357 -d false --no-dotfiles",
         "preversion": "npm run require-license-headers && npm run require-pristine-tree && npm run test",
         "prepare": "husky install",
         "require-license-headers": "addlicense -check -f=./LICENSE src",
@@ -78,12 +78,12 @@
     },
     "homepage": "https://github.com/GoogleChromeLabs/view-transitions-toolkit#readme",
     "devDependencies": {
-        "@playwright/test": "1.57",
-        "@types/node": "^25.0.8",
+        "@playwright/test": "^1.58.2",
+        "@types/node": "^25.5.0",
         "concurrently": "^9.2.1",
-		"http-server": "^14.1.1",
-        "husky": "^8.0.0",
-        "typescript": "^5.7.2",
-        "prettier": "^3.4.1"
+        "http-server": "^14.1.1",
+        "husky": "^9.1.7",
+        "prettier": "^3.8.1",
+        "typescript": "^5.7.2"
     }
 }
