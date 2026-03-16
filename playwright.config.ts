@@ -41,6 +41,7 @@ export default defineConfig({
   tsconfig: './tsconfig.json',
   workers: 3,
   fullyParallel: true,
+  retries: 3,
   projects: [
     {
       name: 'chromium-145',
