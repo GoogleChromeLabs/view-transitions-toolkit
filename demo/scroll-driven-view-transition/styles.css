@@ -1,0 +1,444 @@
+/**
+ * Copyright 2026 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+@layer scrollsnapping {
+	/* Only allow when VTs are supported because it doesn’t make sense to snap if there is no support */
+	@supports (view-transition-name: --works) {
+		html {
+			scroll-snap-type: y mandatory;
+
+			--card-large: 0; /* Value gets set via JS */
+			--card-small: 0; /* Value gets set via JS */
+		}
+
+		.card::before, .tracks::before {
+			content: "";
+			pointer-events: none;
+			z-index: -1;
+			position: absolute;
+			width: 100%;
+			top: 0;
+			left: 0;
+			scroll-snap-align: start;
+			z-index: 10;
+			opacity: 0.35;
+		}
+
+		.card::before {
+			height: var(--card-large);
+		}
+
+		.tracks {
+			position: relative;
+		}
+		.tracks::before {
+			scroll-margin-top: var(--card-small);
+			top: var(--card-large);
+			height: calc(100% - var(--card-large));
+		}
+	}
+}
+
+@layer viewtransitions {
+	/* Configure the durations.
+
+	   The idea here is that the card itself runs for a certain duration,
+	   but elements in that card only for a certain part of that entire duration.
+	   To achieve this, the durations and delays are expressed as fractions, which
+	   are then used in a calcuation to get the actual duration in seconds.
+	*/
+	::view-transition {
+		--vt-base-duration: 1s;
+		
+		--vt-description-duration: 0.5;
+		--vt-description-delay: 0;
+		
+		--vt-moremeta-duration: 0.65;
+		--vt-moremeta-delay: 0.2;
+		
+		--vt-title-duration: 0.6;
+		--vt-title-delay: 0.2;
+		
+		--vt-meta-duration: 0.5;
+		--vt-meta-delay: 0.3;
+	}
+	
+	/* Apply base duration to all + make sure they are linear */
+	::view-transition-group(*) {
+		animation-duration: var(--vt-base-duration);
+		animation-timing-function: linear;
+	}
+	
+	/* Also inherit the delay and easing from the group onto the child pseudos */
+	::view-transition-image-pair(*),
+	::view-transition-new(*),
+	::view-transition-old(*) {
+		animation-delay: inherit;
+		animation-timing-function: inherit;
+	}
+	
+	/* Allow cursor to send events to underlying page while a VT is running */
+	::view-transition {
+		pointer-events: none;
+	}
+	
+	/* Some keyframes to use */
+	@keyframes slide-up { to { translate: 0 -100%; }}
+	@keyframes slide-down { from { translate: 0 -100%; }}
+	@keyframes fade-out { to { opacity: 0; }}
+	@keyframes fade-in { from { opacity: 0; }}
+	
+	/* Capture all these individual elements instead. Also, don’t capture the root. */
+	/* Note: we don’t capture the tracklist in this version! */
+	:root {
+		view-transition-name: none;
+	}
+	.card {
+		view-transition-name: card;
+	}
+	.meta {
+		view-transition-name: meta;
+	}
+	.title {
+		view-transition-name: title;
+	}
+	.moremeta {
+		view-transition-name: moremeta;
+	}
+	.description {
+		view-transition-name: description;
+	}
+	.cover {
+		view-transition-name: cover;
+	}
+	
+	/* The card itself should just shrink, not fade */
+	::view-transition-group(card) {
+		overflow: clip;
+	}
+	::view-transition-new(card),
+	::view-transition-old(card) {
+		animation-name: none;
+	}
+	
+	/* The title and moremeta remain the same. Therefore, don’t fade but immediately use the new snapshot */
+	::view-transition-new(title),
+	::view-transition-new(moremeta) {
+		animation-name: none;
+	}
+	::view-transition-old(title),
+	::view-transition-old(moremeta) {
+		display: none;
+	}
+	
+	/* Slide and fade description. */
+	::view-transition-old(description):only-child {
+		animation-duration: calc(var(--vt-base-duration) * var(--vt-description-duration));
+		animation-delay: calc(var(--vt-base-duration) * var(--vt-description-delay));
+		animation-name: slide-up, fade-out;
+	}
+	::view-transition-new(description):only-child {
+		animation-duration: calc(var(--vt-base-duration) * var(--vt-description-duration));
+		animation-delay: calc(var(--vt-base-duration) * (1 - (var(--vt-description-delay) + var(--vt-description-duration))));
+		animation-name: slide-down, fade-in;
+	}
+	
+	/* Set timing for various components */
+	::view-transition-group(moremeta) {
+		animation-duration: calc(var(--vt-base-duration) * var(--vt-moremeta-duration));
+		animation-delay: calc(var(--vt-base-duration) * var(--vt-moremeta-delay));
+	}
+	::view-transition-group(title) {
+		animation-duration: calc(var(--vt-base-duration) * var(--vt-title-duration));
+		animation-delay: calc(var(--vt-base-duration) * var(--vt-title-delay));
+	}
+	::view-transition-group(meta) {
+		animation-duration: calc(var(--vt-base-duration) * var(--vt-meta-duration));
+		animation-delay: calc(var(--vt-base-duration) * var(--vt-meta-delay));
+	}
+	::view-transition-old(meta):only-child {
+		animation-name: fade-out;
+	}
+	::view-transition-new(meta):only-child {
+		animation-name: fade-in;
+	}
+}
+
+
+@layer reset {
+	* {
+		box-sizing: border-box;
+	}
+
+	html,
+	body,
+	ul[class] {
+		margin: 0;
+		padding: 0;
+	}
+
+	html,
+	body {
+		width: 100%;
+	}
+
+	ul[class] {
+		list-style: none;
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+}
+
+@layer baselayout {
+	html {
+		font-family: system-ui, sans-serif;
+		background-color: #f6f6f6;
+	}
+	main {
+		width: 100%;
+		min-width: 360px;
+		max-width: 500px;
+		margin: 0 auto;
+	}
+	button {
+		position: fixed;
+		right: 1rem;
+		top: 1rem;
+		font-size: 1.5em;
+		padding: 0.25em 0.5em;
+	}
+}
+
+@layer card {
+	.card {
+		background: black;
+		color: white;
+		text-align: center;
+		padding: 2rem 3rem 0;
+		position: relative;
+
+		display: grid;
+		grid-template:
+			"meta" auto
+			"title" 100px
+			"moremeta" auto
+			"description" 80px
+			"cover" auto / auto;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.meta {
+		grid-area: meta;
+	}
+	.title {
+		grid-area: title;
+	}
+	.moremeta {
+		grid-area: moremeta;
+	}
+	.description {
+		grid-area: description;
+	}
+	.cover {
+		grid-area: cover;
+	}
+
+	.card.small {
+		grid-template:
+			"cover title" 1fr
+			"cover moremeta" 1fr / 80px auto;
+		gap: 0;
+		padding: 1rem 0 0 3rem;
+
+		.title {
+			align-self: end;
+		}
+		.moremeta {
+			align-self: start;
+		}
+
+		.description,
+		.meta {
+			display: none;
+		}
+	}
+
+	.card * {
+		margin: 0;
+	}
+
+	.meta {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+
+		.name {
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+
+		.date {
+			font-size: 0.8em;
+			color: #ccc;
+		}
+	}
+
+	.avatar {
+		display: block;
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		outline: 1px solid #fff;
+		outline-offset: 3px;
+	}
+
+	.moremeta {
+		display: flex;
+		flex-direction: row;
+		gap: 0.5em;
+		justify-content: center;
+		color: #ccc;
+	}
+
+	.description {
+		width: 90%;
+		margin: 0 auto;
+		text-wrap: balance;
+		color: #ccc;
+	}
+
+	.back {
+		position: absolute;
+		left: 1rem;
+		top: 2rem;
+		width: 2rem;
+		display: grid;
+		justify-content: start;
+		text-decoration: none;
+		font-size: 2em;
+		color: white;
+	}
+}
+
+@layer tracklist {
+	.tracks {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.track {
+		padding: 1em;
+		display: flex;
+		flex-direction: row;
+		gap: 1em;
+		
+		&:hover {
+			background: #eee;
+		}
+	}
+	
+	.album {
+		display: block;
+		width: 4em;
+		aspect-ratio: 1;
+		border-radius: 0.25em;
+	}
+	
+	.trackinfo {
+		flex: 1;
+		
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		
+		.tracktitle {
+			font-weight: bold;
+		}
+	}
+	
+	.more {
+		justify-self: end;
+		color: #ccc;
+		font-size: 2rem;
+		
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		
+		&:hover {
+			cursor: pointer;
+			color: red;
+		}
+	}
+}
+
+
+@layer warnings {
+	/* Warnings and Preferences */
+	@media (prefers-reduced-motion: reduce) {
+		.warning[data-reason="prefers-reduced-motion"] {
+			display: block;
+		}
+	}
+
+	@supports not (view-transition-name: --works) {
+		.warning[data-reason="same-document-view-transitions"] {
+			display: block;
+		}
+	}
+
+	@supports not (scroll-timeline-name: --works) {
+		.warning[data-reason="scroll-driven-animations"] {
+			display: block;
+		}
+	}
+
+	.warnings {
+		font-family: system-ui, sans-serif;
+		position: fixed;
+		bottom: 0;
+		left: 1em;
+		right: 1em;
+		z-index: 2;
+	}
+
+	@layer warning {
+		.warning {
+			box-sizing: border-box;
+			padding: 1em;
+			border: 1px solid #ccc;
+			background: rgba(255 255 205 / 0.8);
+			display: none;
+			margin: 1em;
+			text-align: center;
+			text-wrap: balance;
+		}
+
+		.warning > :first-child {
+			margin-top: 0;
+		}
+
+		.warning > :last-child {
+			margin-bottom: 0;
+		}
+
+		.warning a {
+			color: blue;
+		}
+		.warning--info {
+			border: 1px solid #123456;
+			background: rgb(205 230 255 / 0.8);
+		}
+		.warning--alarm {
+			border: 1px solid red;
+			background: #ff000010;
+		}
+	}
+}
