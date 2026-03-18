@@ -1,6 +1,6 @@
 {
     "name": "view-transitions-toolkit",
-    "version": "1.0.0-beta.1",
+    "version": "1.0.0-beta.2",
     "description": "A collection of utility functions to more easily work with View Transitions",
     "type": "module",
     "exports": {
