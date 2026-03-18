@@ -58,12 +58,15 @@ export function scrub(vt: ViewTransition, progress: number): void {
     // 3. Get the duration of this specific animation
     const timing = effect.getComputedTiming();
 
-    // Safety check: duration usually returns number (ms), but can be 'auto' (though rare in VT)
+    // Safety check: duration usually returns number (ms), but can be 'auto' (which should not occur in VT)
     if (typeof timing.duration !== "number") return;
+
+    // Take delay into account
+    const delay = typeof timing.delay === "number" ? timing.delay : 0;
 
     // 4. Set the current time based on progress
     // currentTime expects milliseconds
-    anim.currentTime = timing.duration * safeProgress;
+    anim.currentTime = (timing.duration + delay) * safeProgress;
   });
 }
 
