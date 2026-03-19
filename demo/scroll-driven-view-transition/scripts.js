@@ -3,20 +3,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { trackActiveViewTransition } from "../js/track-active-view-transition.js";
-import { getAnimations } from "../js/animations.js";
-import { pause, scrub } from "../js/playback-control.js";
-
-trackActiveViewTransition();
-
 // This demo is a scroll-driven view transition demo, which starts a View Transition
 // to adjust the size of the card when scrolling up and down.
 
 // It starts a VT that remains active and updates the VT’s animations based on the scroll position via scrollTop.
 // It re-initializes everything on resize, as ongoing VTs get cancelled on resize.
 // It only creates the VT when in range.
+
+import { trackActiveViewTransition } from "../js/track-active-view-transition.js";
+import { getAnimations } from "../js/animations.js";
+import { pause, scrub } from "../js/playback-control.js";
+
+// Make sure document.activeViewTransition is tracked
+trackActiveViewTransition();
+
 const go = () => {
-  let activeAnimations = [];
+  let isReverse = false; // Boolean that keeps track if the animation are playing forwards or in reverse.
 
   const $card = document.querySelector(".card");
   const $tracks = document.querySelector(".tracks");
@@ -47,7 +49,7 @@ const go = () => {
   // Method that starts the View Transition
   const startViewTransition = async () => {
     // Determine if we are going back or not
-    const isReverse = document.querySelector(".small") ? true : false;
+    isReverse = document.querySelector(".small") ? true : false;
 
     // Start the View Transition
     document.startViewTransition(() => {
@@ -55,14 +57,17 @@ const go = () => {
     });
     await document.activeViewTransition.ready;
 
-    // Immediately pause all animations linked to it
-    activeAnimations = getAnimations(document.activeViewTransition);
-    for (const anim of activeAnimations) {
-      if (isReverse) anim.reverse();
+    // Reverse the individual animations if needed
+    if (isReverse) {
+      for (const anim of getAnimations(document.activeViewTransition)) {
+        anim.reverse();
+      }
     }
+
+    // Immediately pause all animations linked to the View Transition
     pause(document.activeViewTransition);
 
-    // Make sure animations their currentTime is up-to-date
+    // Make sure all animations their currentTime is up-to-date
     updateAnimations();
 
     // The VT finishes when all the animations have reached 100%,
@@ -80,15 +85,14 @@ const go = () => {
   // Method that updates the tracked animations
   const updateAnimations = () => {
     // No need to do anything when there are no animations being tracked
-    if (!activeAnimations.length || !document.activeViewTransition) return;
+    if (!document.activeViewTransition) return;
 
+    // Determine scroll Progress (ranging from 0 to 1)
     const scrollProgress =
       (document.documentElement.scrollTop - scrollTimelineStart) /
       scrollDistance;
 
-    // Some animations might be playing backwards (when scrolling back up)
-    const isReverse = activeAnimations[0]?.playbackRate === -1;
-
+    // Scrub The View Transition
     scrub(
       document.activeViewTransition,
       isReverse ? 1 - scrollProgress : scrollProgress,
