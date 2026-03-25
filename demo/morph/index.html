@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morph Utility Demo</title>
+  <style>
+    :root {
+      view-transition-name: none;
+    }
+    #card {
+      view-transition-name: card;
+    }
+    #card a {
+      view-transition-name: text;
+    }
+    ::view-transition-group(*) {
+      animation-duration: 2s;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    #card {
+      display: block;
+      padding: 2em;
+      aspect-ratio: 16/9;
+      width: min-content;
+      place-content: center;
+      text-align: center;
+      margin: 0 auto;
+      background: #ccc;
+      border: 3px solid gray;
+      border-radius: 0.25rem;
+    }
+
+    #card.big {
+      aspect-ratio: 4/1;
+      font-size: 2em;
+      background: lightblue;
+      border-width: 8px;
+      border-radius: 3rem;
+    }
+
+    html, body {
+      height: 100%;
+    }
+    body {
+      place-content: center;
+    }
+  </style>
+  <script type="module" src="./scripts.js"></script>
+</head>
+<body>
+  <div id="card">
+    <a href="#">Toggle</a>
+  </div>
+</body>
+</html>

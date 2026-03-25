@@ -27,6 +27,10 @@
         "./misc": {
             "types": "./dist/misc.d.ts",
             "import": "./dist/misc.js"
+        },
+        "./morph": {
+            "types": "./dist/morph.d.ts",
+            "import": "./dist/morph.js"
         }
     },
     "files": [
