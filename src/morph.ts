@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { getAnimations, ViewTransitionPart } from "./animations.js";
+
 
 /**
  * Returns CSS needed to morph an element during a View Transition,
@@ -11,13 +11,14 @@ import { getAnimations, ViewTransitionPart } from "./animations.js";
  *
  * @param vt The active ViewTransition
  * @param element The element to apply the morph to
- * @param properties A list of CSS properties to transition
+ * @param options Object containing duration (ms) and easing string
  * @returns A string containing the required CSS, or an empty string if it couldn't be generated
  */
 export function morph(
   vt: ViewTransition,
   element: HTMLElement,
-  properties: string[]
+  properties: string[],
+  options: { duration: number; easing: string }
 ): string {
   // 1. Get view-transition-name
   const styles = window.getComputedStyle(element);
@@ -34,18 +35,8 @@ export function morph(
     console.warn("morph: Element already has a CSS transition applied. It will be overwritten by morph.");
   }
   
-  // 3. Get the duration and easing from the original ::view-transition-group
-  const groupAnimations = getAnimations(vt, vtName, ViewTransitionPart.Group);
-  if (groupAnimations.length === 0) {
-    console.warn(`morph: Could not find ::view-transition-group animation for ${vtName}. Skipping.`);
-    return "";
-  }
-
-  const anim = groupAnimations[0];
-  const effect = anim.effect as KeyframeEffect;
-  const timing = effect.getComputedTiming();
-  const durationMs = timing.duration;
-  const easing = effect.getTiming().easing;
+  const durationMs = options.duration;
+  const easing = options.easing;
 
   // 4. Generate the CSS string
   if (!element.id) {
