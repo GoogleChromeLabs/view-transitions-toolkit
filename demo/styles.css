@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-
 :root {
-  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --bg-color: #0b0f19;
   --text-color: #f8fafc;
   --text-secondary: #94a3b8;
@@ -105,7 +103,6 @@ h1 {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: -2px;
   line-height: 1.1;
 }
 
