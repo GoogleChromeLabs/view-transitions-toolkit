@@ -3,37 +3,62 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-body { font-family: sans-serif; padding: 20px; }
-nav { margin-bottom: 20px; }
-nav a { margin-right: 10px; }
+@layer demo {
+  nav { margin-bottom: 20px; }
+  nav a { margin-right: 10px; }
 
-a[href$="/"] { background-color: #f0f0f0; }
-a[href$="/detail/1"] { background-color: #e0f0ff; }
-a[href$="/detail/2"] { background-color: #e0f0ff; }
-a[href$="/detail/3"] { background-color: #e0f0ff; }
-a[href$="/about"] { background-color: #fff0f0; }
+  a[href$="/"] { background-color: #f0f0f0; }
+  a[href$="/detail/1"] { background-color: #e0f0ff; }
+    a[href$="/detail/2"] { background-color: #e0f0ff; }
+    a[href$="/detail/3"] { background-color: #e0f0ff; }
+    a[href$="/about"] { background-color: #fff0f0; }
 
-.from, .to {
-    width: 100px;
-    height: 100px;
-    margin: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid black;
-    background-color: white;
-    vertical-align: middle;
+    .from, .to {
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid black;
+        background-color: white;
+        vertical-align: middle;
+    }
+
+    @view-transition { navigation: auto; }
+
+    :active-view-transition-type(from-index) .from { background-color: #f0f0f0; }
+    :active-view-transition-type(to-index) .to { background-color: #f0f0f0; }
+
+    :active-view-transition-type(from-detail) .from { background-color: #e0f0ff; }
+    :active-view-transition-type(to-detail) .to { background-color: #e0f0ff; }
+
+    :active-view-transition-type(from-about) .from { background-color: #fff0f0; }
+    :active-view-transition-type(to-about) .to { background-color: #fff0f0; }
+
+    ::view-transition-group(*) { animation-duration: 1s; }
 }
 
-@view-transition { navigation: auto; }
+@layer demo.support {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-:active-view-transition-type(from-index) .from { background-color: #f0f0f0; }
-:active-view-transition-type(to-index) .to { background-color: #f0f0f0; }
+  html {
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  }
 
-:active-view-transition-type(from-detail) .from { background-color: #e0f0ff; }
-:active-view-transition-type(to-detail) .to { background-color: #e0f0ff; }
+  select, input {
+    font-family: inherit;
+  }
 
-:active-view-transition-type(from-about) .from { background-color: #fff0f0; }
-:active-view-transition-type(to-about) .to { background-color: #fff0f0; }
+  html, body {
+    height: 100%;
+  }
 
-::view-transition-group(*) { animation-duration: 1s; }
+  html {
+    padding: 2em;
+  }
+}

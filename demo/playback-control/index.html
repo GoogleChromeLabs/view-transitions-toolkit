@@ -98,6 +98,29 @@
       animation-duration: 5s;
     }
 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+
+    select, input {
+      font-family: inherit;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      display: grid;
+      place-content: center;
+    }
+
     .box {
       height: 2em;
       width: 2em;
@@ -111,11 +134,13 @@
   </style>
 </head>
 <body>
-  <div class="box"></div>
+  <div>
+    <div class="box"></div>
 
-  <button id="start">Start VT</button>
-  <button id="pause" disabled>Pause VT</button>
-  <button id="resume" disabled>Resume VT</button>
-  <input  id="scrub" type="range" min="0" max="1" step="0.01" value="0" disabled>
+    <button id="start">Start VT</button>
+    <button id="pause" disabled>Pause VT</button>
+    <button id="resume" disabled>Resume VT</button>
+    <input id="scrub" type="range" min="0" max="1" step="0.01" value="0" disabled>
+  </div>
 </body>
 </html>

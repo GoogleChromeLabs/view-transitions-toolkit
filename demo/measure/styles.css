@@ -3,9 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-@import "https://unpkg.com/open-props" layer(design.system);
-@import "https://unpkg.com/open-props/normalize.min.css" layer(demo.support);
-
 @layer demo {
   ::view-transition {
     pointer-events: none;
@@ -28,17 +25,38 @@
 }
 
 @layer demo.support {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  }
+
+  select, input {
+    font-family: inherit;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
   .box {
     aspect-ratio: 1;
     inline-size: 20vmin;
-    background: var(--link);
+    background: dodgerblue;
+    color: white;
+    place-content: center;
+    text-align: center;
   }
   
   body {
     display: grid;
     place-content: center;
-    padding: var(--size-5);
-    gap: var(--size-5);
+    padding: 1em;
+    gap: 1em;
   }
   
   html {
