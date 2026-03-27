@@ -8,16 +8,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Transitions Toolkit</title>
+    <title>View Transitions Toolkit Demos</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'system';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
 </head>
 <body>
-    <h1>View Transitions Toolkit</h1>
-    <ul>
-        <li><a href="measure/">Measure</a></li>
-        <li><a href="optimize/">Optimize</a></li>
-        <li><a href="playback-control/">Playback Control</a></li>
-        <li><a href="navigation-types/">Navigation Types</a></li>
-        <li><a href="scroll-driven-view-transition/">Scroll-Driven View Transition</a></li>
-    </ul>
+    <div class="theme-switcher">
+        <button class="theme-btn" data-mode="light" aria-label="Light Theme">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+        </button>
+        <button class="theme-btn" data-mode="system" aria-label="System Theme">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20h6l-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+        </button>
+        <button class="theme-btn" data-mode="dark" aria-label="Dark Theme">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+        </button>
+    </div>
+    <header>
+        <h1>View Transitions Toolkit</h1>
+        <p class="description">
+            A collection of utility functions to more easily work with View Transitions.
+        </p>
+    </header>
+
+    <main>
+        <div class="grid">
+            <!-- Measure -->
+            <a href="measure/" class="card">
+                <div class="card-content">
+                    <h3 class="card-title">
+                        <svg class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Measure
+                    </h3>
+                    <p class="card-desc">Extract and measure geometry (size and position) of View Transition pseudo-elements using <code>extractGeometry</code>.</p>
+                </div>
+                <div class="card-link">Demo <span>&rarr;</span></div>
+                </a>
+
+            <!-- Optimize -->
+            <a href="optimize/" class="card">
+                <div class="card-content">
+                    <h3 class="card-title">
+                        <svg class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        Optimize
+                    </h3>
+                    <p class="card-desc">Optimize <code>::view-transition-group</code> animations using performant <code>transform</code>-based animations instead of <code>width</code> and <code>height</code> changes.</p>
+                </div>
+                <div class="card-link">Demo <span>&rarr;</span></div>
+                </a>
+
+            <!-- Playback Control -->
+            <a href="playback-control/" class="card">
+                <div class="card-content">
+                    <h3 class="card-title">
+                        <svg class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Playback Control
+                    </h3>
+                    <p class="card-desc">Control the playback of a View Transition. Use utilities to pause, resume, or scrub all animations simultaneously.</p>
+                </div>
+                <div class="card-link">Demo <span>&rarr;</span></div>
+                </a>
+
+            <!-- Navigation Types -->
+            <a href="navigation-types/" class="card">
+                <div class="card-content">
+                    <h3 class="card-title">
+                        <svg class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                        Navigation Types
+                    </h3>
+                    <p class="card-desc">Automatically inject <code>from-&lt;name&gt;</code> and <code>to-&lt;name&gt;</code> View Transition Types based on navigation origin and destination.</p>
+                </div>
+                <div class="card-link">Demo <span>&rarr;</span></div>
+                </a>
+
+            <!-- Scroll-Driven View Transition -->
+            <a href="scroll-driven-view-transition/" class="card">
+                <div class="card-content">
+                    <h3 class="card-title">
+                        <svg class="card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+                        </svg>
+                        Scroll-Driven
+                    </h3>
+                    <p class="card-desc">Connect view transitions to scroll animations. Create fluid, progressive scene changes driven by the user's viewport.</p>
+                </div>
+                <div class="card-link">Demo <span>&rarr;</span></div>
+                </a>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = localStorage.getItem('theme') || 'system';
+            const buttons = document.querySelectorAll('.theme-btn');
+            
+            const setActiveButton = (theme) => {
+                buttons.forEach(btn => {
+                    if (btn.getAttribute('data-mode') === theme) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            };
+
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                setActiveButton(theme);
+            };
+
+            setActiveButton(currentTheme);
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const theme = btn.getAttribute('data-mode');
+                    applyTheme(theme);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
