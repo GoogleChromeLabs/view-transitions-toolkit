@@ -7,7 +7,7 @@
   nav { margin-bottom: 20px; }
   nav a { margin-right: 10px; }
 
-  a[href$="/"] { background-color: #f0f0f0; }
+  a[href$="/demo"] { background-color: #f0f0f0; }
   a[href$="/detail/1"] { background-color: #e0f0ff; }
     a[href$="/detail/2"] { background-color: #e0f0ff; }
     a[href$="/detail/3"] { background-color: #e0f0ff; }

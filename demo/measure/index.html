@@ -1,23 +1,100 @@
 <!DOCTYPE html>
-<!--
- Copyright 2026 Google LLC
- SPDX-License-Identifier: Apache-2.0
--->
-
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="scripts.js" type="module"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Measure Demo - View Transitions Toolkit</title>
+    <link rel="stylesheet" href="../styles.css">
+    <!-- early theme initialization script -->
+    <script>
+         const theme = localStorage.getItem('theme') || 'system';
+         document.documentElement.setAttribute('data-theme', theme);
+    </script>
 </head>
-<body>
-  <div class="box">Click the page</div>
+<body class="shell-container">
+    <div class="shell-main">
+        <div class="shell-frame">
+            <iframe src="demo.html" title="Measure Demo"></iframe>
+        </div>
+    </div>
+    <aside class="shell-sidebar">
+        <div class="shell-header">
+            <a href="../" class="shell-back"><span>&larr;</span> Back</a>
+            <div class="theme-switcher">
+                <button class="theme-btn" data-mode="light" aria-label="Light Theme">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h1M3 12h1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+                <button class="theme-btn" data-mode="system" aria-label="System Theme">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20h6l-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z" />
+                    </svg>
+                </button>
+                <button class="theme-btn" data-mode="dark" aria-label="Dark Theme">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="shell-explanation">
+            <h2>Measure</h2>
+            <p>Extract and measure geometry (size and position) of View Transition pseudo-elements using <code>extractGeometry</code>.</p>
+            <hr>
+            <h3>The Code</h3>
+            <p>The demo triggers a View Transition on click and logs the geometry of the box group:</p>
+            <pre><code>document.body.addEventListener("click", async (e) => {
+  const t = document.startViewTransition(() => {
+    setRandomAlignments();
+  });
+  await t.ready;
 
-  <div id="debug"></div>
+  const boxGroupAnimation = getAnimations(t, "box", ViewTransitionPart.Group)[0];
+  const boxGroupGeometry = extractGeometry(boxGroupAnimation);
+});</code></pre>
+            <hr>
+            <h3>Functions Used</h3>
+            <p>This demo uses <code>getAnimations</code> and <code>extractGeometry</code> to read the size and position of elements during a transition:</p>
+            <pre><code>import { getAnimations, ViewTransitionPart, extractGeometry } from "view-transitions-toolkit/animations";
 
-  <div class="debug" id="before"></div>
-  <div class="debug" id="after"></div>
+const boxGroupAnimation = getAnimations(t, "box", ViewTransitionPart.Group)[0];
+const boxGroupGeometry = extractGeometry(boxGroupAnimation);</code></pre>
+        </div>
+    </aside>
+
+    <!-- Theme Switcher Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = localStorage.getItem('theme') || 'system';
+            const buttons = document.querySelectorAll('.theme-btn');
+
+            const applyTheme = (theme) => {
+                if (theme === 'system') {
+                    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', theme);
+                }
+                localStorage.setItem('theme', theme);
+
+                // Update UI state
+                buttons.forEach(btn => {
+                    const isActive = btn.getAttribute('data-mode') === theme;
+                    btn.classList.toggle('active', isActive);
+                });
+            };
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const mode = btn.getAttribute('data-mode');
+                    applyTheme(mode);
+                });
+            });
+
+            // Set initial state
+            applyTheme(currentTheme);
+        });
+    </script>
 </body>
 </html>

@@ -47,7 +47,7 @@ function getRouteName(
 
 /**
  * Installs listeners for 'pageswap' and 'pagereveal' to automatically
- * inject 'from-<name>' and 'to-<name>' classes into the ViewTransition.
+ * set 'from-<name>' and 'to-<name>' types on the active ViewTransition.
  *
  * @param routeMap - Dictionary of route names to URLPattern strings.
  */

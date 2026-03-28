@@ -1,146 +1,99 @@
 <!DOCTYPE html>
-<!--
- Copyright 2026 Google LLC
- SPDX-License-Identifier: Apache-2.0
--->
-
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>View Transitions Toolkit Demo: Playback Control</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="scripts.js"></script>
-  <script type="module">
-    import { pause, resume, scrub } from '../js/playback-control.js';
-    import { getAnimations, ViewTransitionPart } from '../js/animations.js';
-
-    // The View Transition and one of its animations to track
-    let t, a;
-
-    const syncProgressToSlider = () => {
-      document.getElementById("scrub").value = a.effect.getComputedTiming().progress.toFixed(2);
-      requestAnimationFrame(syncProgressToSlider);
-    }
-
-    // When clicking the start button, start a View Transition
-    document.getElementById("start").addEventListener("click", async () => {
-      document.getElementById("start").disabled = true;
-      document.getElementById("pause").disabled = false;
-      document.getElementById("resume").disabled = true;
-      document.getElementById("scrub").disabled = true;
-
-      t = document.startViewTransition(() => {
-        document.querySelector('.box').classList.toggle('supergreen');
-      });
-
-      t.ready.then(() => {
-        a = getAnimations(t, 'box', ViewTransitionPart.Group)[0];
-
-        // Start a rAF with syncProgressToSlider
-        requestAnimationFrame(syncProgressToSlider);
-      });
-
-      t.finished.then(() => {
-        document.getElementById("start").disabled = false;
-        document.getElementById("pause").disabled = true;
-        document.getElementById("resume").disabled = true;
-        document.getElementById("scrub").disabled = true;
-
-        // Stop the rAF
-        cancelAnimationFrame(syncProgressToSlider);
-      });
-    });
-
-    // When clicking the pause button, pause the View Transition
-    document.getElementById("pause").addEventListener("click", () => {
-      document.getElementById("start").disabled = true;
-      document.getElementById("pause").disabled = true;
-      document.getElementById("resume").disabled = false;
-      document.getElementById("scrub").disabled = false;
-
-      // Pause the VT
-      pause(t);
-
-      // Stop the rAF
-      cancelAnimationFrame(syncProgressToSlider);
-    });
-
-    // When clicking the resume button, unpause the View Transition
-    document.getElementById("resume").addEventListener("click", () => {
-      document.getElementById("start").disabled = true;
-      document.getElementById("pause").disabled = false;
-      document.getElementById("resume").disabled = true;
-      document.getElementById("scrub").disabled = true;
-
-      resume(t);
-
-      // Start a rAF with syncProgressToSlider
-      requestAnimationFrame(syncProgressToSlider);
-    });
-
-    // When moving the slider, scrub the View Transition
-    document.getElementById("scrub").addEventListener("input", (e) => {
-      scrub(t, e.target.value);
-    });
-  </script>
-  <style>
-    :root {
-      view-transition-name: none;
-    }
-    .box {
-      view-transition-name: box;
-    }
-    ::view-transition {
-      pointer-events: none;
-    }
-    ::view-transition-group(*) {
-      animation-duration: 5s;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    }
-
-    select, input {
-      font-family: inherit;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
-    body {
-      display: grid;
-      place-content: center;
-    }
-
-    .box {
-      height: 2em;
-      width: 2em;
-      background: blue;
-
-      &.supergreen {
-        background: green;
-        margin-left: auto;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playback Control Demo - View Transitions Toolkit</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+         const theme = localStorage.getItem('theme') || 'system';
+         document.documentElement.setAttribute('data-theme', theme);
+    </script>
 </head>
-<body>
-  <div>
-    <div class="box"></div>
+<body class="shell-container">
+    <div class="shell-main">
+        <div class="shell-frame">
+            <iframe src="demo.html" title="Playback Control Demo"></iframe>
+        </div>
+    </div>
+    <aside class="shell-sidebar">
+        <div class="shell-header">
+            <a href="../" class="shell-back"><span>&larr;</span> Back</a>
+            <div class="theme-switcher">
+                <button class="theme-btn" data-mode="light" aria-label="Light Theme">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h1M3 12h1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+                <button class="theme-btn" data-mode="system" aria-label="System Theme">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20h6l-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z" />
+                    </svg>
+                </button>
+                <button class="theme-btn" data-mode="dark" aria-label="Dark Theme">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="shell-explanation">
+            <h2>Playback Control</h2>
+            <p>Control the playback of a View Transition. Use utilities to pause, resume, or scrub all animations simultaneously.</p>
+            <hr>
+            <h3>The Code</h3>
+            <p>The demo binds click and input events to <code>pause</code>, <code>resume</code>, and <code>scrub</code> functions:</p>
+            <pre><code>document.getElementById("pause").addEventListener("click", () => {
+  pause(t);
+});
 
-    <button id="start">Start VT</button>
-    <button id="pause" disabled>Pause VT</button>
-    <button id="resume" disabled>Resume VT</button>
-    <input id="scrub" type="range" min="0" max="1" step="0.01" value="0" disabled>
-  </div>
+document.getElementById("resume").addEventListener("click", () => {
+  resume(t);
+});
+
+document.getElementById("scrub").addEventListener("input", (e) => {
+  scrub(t, e.target.value);
+});</code></pre>
+            <hr>
+            <h3>Functions Used</h3>
+            <p>This demo uses <code>pause</code>, <code>resume</code>, and <code>scrub</code> to synchronize View Transition playback with a range slider or custom timeline:</p>
+            <pre><code>import { pause, resume, scrub } from "view-transitions-toolkit/playback-control";
+
+pause(t); // Pauses all VT animations
+resume(t); // Resumes all VT animations
+scrub(t, position); // Sets animations to 50% playback</code></pre>
+        </div>
+    </aside>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = localStorage.getItem('theme') || 'system';
+            const buttons = document.querySelectorAll('.theme-btn');
+
+            const applyTheme = (theme) => {
+                if (theme === 'system') {
+                    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', theme);
+                }
+                localStorage.setItem('theme', theme);
+
+                buttons.forEach(btn => {
+                    const isActive = btn.getAttribute('data-mode') === theme;
+                    btn.classList.toggle('active', isActive);
+                });
+            };
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const mode = btn.getAttribute('data-mode');
+                    applyTheme(mode);
+                });
+            });
+
+            applyTheme(currentTheme);
+        });
+    </script>
 </body>
 </html>

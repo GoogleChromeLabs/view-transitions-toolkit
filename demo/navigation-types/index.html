@@ -1,27 +1,105 @@
 <!DOCTYPE html>
-<!--
- Copyright 2026 Google LLC
- SPDX-License-Identifier: Apache-2.0
--->
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Navigation Types Demo - Home</title>
-    <link rel="stylesheet" href="styles.css">
-    <script type="module" src="scripts.js" blocking="render" async></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Types Demo - View Transitions Toolkit</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+         const theme = localStorage.getItem('theme') || 'system';
+         document.documentElement.setAttribute('data-theme', theme);
+    </script>
 </head>
-<body>
-    <h1>Home</h1>
-    <nav>
-        <a href="./">Home</a>
-        <a href="./detail/1">Detail 1</a>
-        <a href="./detail/2">Detail 2</a>
-        <a href="./detail/3">Detail 3</a>
-        <a href="./about">About</a>
-    </nav>
-    <div class="from">From Box</div>
-    <div class="to">To Box</div>
-    <p>Welcome to the Navigation Types demo.</p>
+<body class="shell-container">
+    <div class="shell-main">
+        <div class="shell-frame">
+            <iframe src="demo.html" title="Navigation Types Demo"></iframe>
+        </div>
+    </div>
+    <aside class="shell-sidebar">
+        <div class="shell-header">
+            <a href="../" class="shell-back"><span>&larr;</span> Back</a>
+            <div class="theme-switcher">
+                <button class="theme-btn" data-mode="light" aria-label="Light Theme">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h1M3 12h1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </button>
+                <button class="theme-btn" data-mode="system" aria-label="System Theme">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20h6l-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z" />
+                    </svg>
+                </button>
+                <button class="theme-btn" data-mode="dark" aria-label="Dark Theme">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:16px;height:16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="shell-explanation">
+            <h2>Navigation Types</h2>
+            <p>Automatically inject <code>from-&lt;name&gt;</code> and <code>to-&lt;name&gt;</code> View Transition Types based on navigation origin and destination.</p>
+            <hr>
+            <h3>The Code</h3>
+            <p>The demo uses <code>useAutoTypes</code> with a route map to determine types during navigation:</p>
+            <pre><code>const routeMap = {
+    "index": "/navigation-types/demo",
+    "detail": "/navigation-types/detail/:id",
+    "about": "/navigation-types/about"
+};
+
+useAutoTypes(routeMap);</code></pre>
+            <p>In your CSS, you can then target these types using the <code>:active-view-transition-type</code> pseudo-class to style elements conditionally:</p>
+            <pre><code>:active-view-transition-type(from-index) .from { background-color: #f0f0f0; }
+:active-view-transition-type(to-index) .to { background-color: #f0f0f0; }
+
+:active-view-transition-type(from-detail) .from { background-color: #e0f0ff; }
+:active-view-transition-type(to-detail) .to { background-color: #e0f0ff; }</code></pre>
+            <hr>
+            <h3>Functions Used</h3>
+            <p>This demo uses <code>useAutoTypes</code> to automatically set types on the active <code>ViewTransition</code> based on the navigation origin and destination:</p>
+            <pre><code>import { useAutoTypes } from "view-transitions-toolkit/navigation";
+
+const routeMap = {
+    "index": "/demo",
+    "detail": "/detail/:id",
+    "about": "/about"
+};
+
+useAutoTypes(routeMap);</code></pre>
+        </div>
+    </aside>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = localStorage.getItem('theme') || 'system';
+            const buttons = document.querySelectorAll('.theme-btn');
+
+            const applyTheme = (theme) => {
+                if (theme === 'system') {
+                    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', theme);
+                }
+                localStorage.setItem('theme', theme);
+
+                buttons.forEach(btn => {
+                    const isActive = btn.getAttribute('data-mode') === theme;
+                    btn.classList.toggle('active', isActive);
+                });
+            };
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const mode = btn.getAttribute('data-mode');
+                    applyTheme(mode);
+                });
+            });
+
+            applyTheme(currentTheme);
+        });
+    </script>
 </body>
 </html>

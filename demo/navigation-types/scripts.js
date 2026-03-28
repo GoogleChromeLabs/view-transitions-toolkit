@@ -7,7 +7,7 @@ import { useAutoTypes } from "../js/navigation.js";
 
 const basePath = window.location.pathname.startsWith("/demo") ? "/demo" : "";
 const routeMap = {
-  index: `${basePath}/navigation-types/`,
+  index: `${basePath}/navigation-types/demo`,
   detail: `${basePath}/navigation-types/detail/:id`,
   about: `${basePath}/navigation-types/about`,
 };
