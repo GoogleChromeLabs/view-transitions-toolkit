@@ -38,6 +38,7 @@
     "scripts": {
         "clean:dist": "rm -rf ./dist",
         "clean:demo": "rm -rf ./demo/js && mkdir -p ./demo/js && touch ./demo/js/.gitkeep",
+        "deploy": "node scripts/prepare_deploy.cjs && gcloud storage rsync --recursive --delete-unmatched-destination-objects .deploy_temp gs://chrome-dev-demos/public/view-transitions-toolkit",
         "lint": "prettier --check '{src,tests,demo}/**/*.{ts,tsx,js,jsx}'",
         "format": "prettier --write '{src,tests,demo}/**/*.{ts,tsx,js,jsx}'",
         "prebuild": "npm run clean:dist",
