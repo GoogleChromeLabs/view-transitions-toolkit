@@ -14,7 +14,15 @@
 <body class="shell-container">
     <div class="shell-main">
         <div class="shell-frame">
-            <iframe src="demo.html" title="Measure Demo"></iframe>
+            <div class="shell-nav-bar">
+                <button id="nav-back" title="Back">&larr;</button>
+                <button id="nav-forward" title="Forward">&rarr;</button>
+                <button id="nav-reload" title="Reload">&#x21BB;</button>
+                <div class="shell-url-bar">
+                    <span id="nav-url">/demo</span>
+                </div>
+            </div>
+            <iframe id="demo-iframe" src="demo.html" title="Measure Demo"></iframe>
         </div>
     </div>
     <aside class="shell-sidebar">
@@ -94,6 +102,61 @@ const boxGroupGeometry = extractGeometry(boxGroupAnimation);</code></pre>
 
             // Set initial state
             applyTheme(currentTheme);
+
+            // Iframe Navigation Bar Controls (History State Tracker)
+            const iframe = document.getElementById('demo-iframe');
+            const navUrl = document.getElementById('nav-url');
+            const btnBack = document.getElementById('nav-back');
+            const btnForward = document.getElementById('nav-forward');
+            const btnReload = document.getElementById('nav-reload');
+
+            let historyStack = ['/demo'];
+            let currentIndex = 0;
+            let isUserNav = true;
+
+            btnBack.disabled = true;
+            btnForward.disabled = true;
+
+            btnBack.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    isUserNav = false;
+                    currentIndex--;
+                    iframe.contentWindow.history.back();
+                }
+            });
+
+            btnForward.addEventListener('click', () => {
+                if (currentIndex < historyStack.length - 1) {
+                    isUserNav = false;
+                    currentIndex++;
+                    iframe.contentWindow.history.forward();
+                }
+            });
+
+            btnReload.addEventListener('click', () => {
+                iframe.contentWindow.location.reload();
+            });
+
+            iframe.addEventListener('load', () => {
+                let displayPath = '/demo';
+
+                if (isUserNav) {
+                    if (currentIndex < historyStack.length - 1) {
+                        historyStack = historyStack.slice(0, currentIndex + 1);
+                    }
+                    if (historyStack[currentIndex] !== displayPath) {
+                        historyStack.push(displayPath);
+                        currentIndex++;
+                    }
+                } else {
+                    isUserNav = true;
+                }
+
+                navUrl.innerText = displayPath;
+
+                btnBack.disabled = currentIndex <= 0;
+                btnForward.disabled = currentIndex >= historyStack.length - 1;
+            });
         });
     </script>
 </body>
