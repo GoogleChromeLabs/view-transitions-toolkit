@@ -319,16 +319,24 @@ h1 {
 }
 
 .theme-switcher {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+  position: relative; /* Default inside flex containers (like sidebars) */
   display: flex;
+  align-items: center;
+  height: 40px;
+  box-sizing: border-box;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 30px;
   padding: 0.25rem;
   backdrop-filter: blur(16px);
   z-index: 10;
+}
+
+body > .theme-switcher {
+  position: fixed; /* Fixed to viewport on main page list view */
+  top: 2rem;
+  right: 2rem;
+  z-index: 20;
 }
 
 .theme-btn {
@@ -382,9 +390,9 @@ html[data-theme="light"] body::after {
   .grid {
     grid-template-columns: 1fr;
   }
-  .theme-switcher {
+  body > .theme-switcher {
     position: static;
-    margin: 0 auto 2rem;
+    margin: 1.5rem auto;
     width: max-content;
   }
 }
@@ -514,16 +522,28 @@ html[data-theme="light"] body::after {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  margin-top: -1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .shell-back {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 30px;
+  padding: 0 1rem;
+  height: 40px;
+  box-sizing: border-box;
   color: var(--text-secondary);
   text-decoration: none;
   font-weight: 600;
   transition: var(--transition);
+  backdrop-filter: blur(16px);
 }
 
 .shell-back:hover {
