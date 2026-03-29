@@ -5,7 +5,12 @@
 
 import { useAutoTypes } from "../js/navigation.js";
 
-const basePath = window.location.pathname.startsWith("/demo") ? "/demo" : "";
+// Because this demo can be hosted anywhere (in a root, or a subfolder) we need to determine the basePath
+// that acts as as a prefix to the routes.
+const basePath = window.location.pathname.substring(
+  0,
+  window.location.pathname.indexOf("/navigation-types"),
+);
 const routeMap = {
   index: `${basePath}/navigation-types/demo{.html}?`,
   detail: `${basePath}/navigation-types/detail/:id{.html}?`,
