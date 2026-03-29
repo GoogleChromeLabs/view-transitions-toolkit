@@ -599,6 +599,26 @@ code {
   margin: 1.5rem 0;
 }
 
+.demo-footer, .shell-footer {
+  margin-top: 5rem;
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.demo-footer a, .shell-footer a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.demo-footer a:hover, .shell-footer a:hover {
+  text-decoration: underline;
+}
+
 /* Responsive Layout for Demo Shells (Viewport < 1130px) */
 @media (max-width: 1129px) {
   .shell-container {
