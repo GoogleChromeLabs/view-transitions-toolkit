@@ -68,10 +68,10 @@ const updateAnimations = () => {
 };</code></pre>
             <p>When scrolling back the animations need to play in reverse. This is achieved by reversing the animations and scrubbing from 1 to 0.</p>
             <pre><code>if (isReverse) {
-              for (const anim of getAnimations(document.activeViewTransition)) {
-                anim.reverse();
-              }
-            }</code></pre>
+    for (const anim of getAnimations(document.activeViewTransition)) {
+    anim.reverse();
+    }
+}</code></pre>
             <hr>
             <h3>Functions Used</h3>
             <p>This demo uses <code>trackActiveViewTransition</code>, <code>getAnimations</code>, and utilities like <code>pause</code> / <code>scrub</code> to synchronize a View Transition with scroll state:</p>
