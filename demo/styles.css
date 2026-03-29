@@ -655,6 +655,10 @@ code {
     display: block !important;
     margin-top: 2rem;
   }
+
+  .desktop-only {
+    display: none !important;
+  }
 }
 
 
