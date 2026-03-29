@@ -1,0 +1,78 @@
+@layer reset, demo;
+
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-group(*) {
+  animation-duration: 1s;
+}
+
+.box {
+  view-transition-name: box;
+}
+
+#debug {
+  position: fixed;
+  opacity: 0.5;
+  font-family: monospace;
+  padding: 0.2rem;
+  white-space: pre-wrap;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.9);
+  overflow-y: auto;
+}
+
+@layer demo.support {
+  .box {
+    display: block;
+    inline-size: 20vmin;
+    block-size: 20vmin;
+    aspect-ratio: 1;
+    overflow: clip;
+    background: dodgerblue;
+    color: white;
+    place-content: center;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  body {
+    display: grid;
+    place-content: center;
+    padding: 1em;
+    gap: 1em;
+    height: 100vh;
+    margin: 0;
+  }
+
+  html {
+    view-transition-name: none;
+  }
+}
+
+@layer reset {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    height: 100%;
+  }
+  html {
+    font-family:
+      system-ui,
+      "Segoe UI",
+      Roboto,
+      Helvetica,
+      Arial,
+      sans-serif,
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol";
+  }
+}
