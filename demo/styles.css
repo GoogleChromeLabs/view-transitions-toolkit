@@ -113,9 +113,130 @@ h1 {
   margin: 0 auto;
 }
 
-main {
+.toolkit-overview {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   width: 100%;
-  max-width: 1200px;
+}
+
+.toolkit-overview h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.toolkit-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.toolkit-list li {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.li-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-color);
+  flex-shrink: 0;
+}
+
+.toolkit-list a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.toolkit-list a:hover {
+  text-decoration: underline;
+}
+
+.install-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.install-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: monospace;
+  font-size: 1rem;
+  color: var(--text-color);
+  width: auto;
+  min-width: 320px;
+  max-width: fit-content;
+  position: relative;
+}
+
+[data-theme="light"] .install-box {
+  background: var(--bg-color) !important;
+  color: #0f172a !important;
+}
+
+.copy-btn {
+  background: transparent;
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  color: var(--text-color);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-color);
+}
+
+.copy-success {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  background: var(--accent-gradient);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 600;
+  animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(10px); }
+  20% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 3rem 0 1.5rem;
+  color: var(--text-color);
 }
 
 .grid {
@@ -442,7 +563,6 @@ pre {
 }
 
 code {
-  font-family: inherit !important;
   color: var(--text-color) !important;
 }
 
