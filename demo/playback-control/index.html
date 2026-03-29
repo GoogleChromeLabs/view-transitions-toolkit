@@ -51,10 +51,10 @@
         </div>
         <div class="shell-explanation">
             <h2>Playback Control</h2>
-            <p>Control the playback of a View Transition. Use utilities to pause, resume, or scrub all animations simultaneously.</p>
+            <p>Control the playback of a View Transition. Use utilities to pause, resume, or scrub all animations linked to a View Transition simultaneously.</p>
             <hr>
             <h3>The Code</h3>
-            <p>The demo binds click and input events to <code>pause</code>, <code>resume</code>, and <code>scrub</code> functions:</p>
+            <p>The demo binds click and input events to the <code>pause</code>, <code>resume</code>, and <code>scrub</code> functions:</p>
             <pre><code>document.getElementById("pause").addEventListener("click", () => {
   pause(t);
 });
@@ -66,14 +66,15 @@ document.getElementById("resume").addEventListener("click", () => {
 document.getElementById("scrub").addEventListener("input", (e) => {
   scrub(t, e.target.value);
 });</code></pre>
+            <p>Once the View Transition is paused, use the slider to scrub through the animation, or click resume to let it finish.</p>
             <hr>
             <h3>Functions Used</h3>
             <p>This demo uses <code>pause</code>, <code>resume</code>, and <code>scrub</code> to synchronize View Transition playback with a range slider or custom timeline:</p>
             <pre><code>import { pause, resume, scrub } from "view-transitions-toolkit/playback-control";
 
-pause(t); // Pauses all VT animations
-resume(t); // Resumes all VT animations
-scrub(t, position); // Sets animations to 50% playback</code></pre>
+pause(t); // Pauses all animations linked to a View Transition
+resume(t); // Resumes all animations linked to a View Transition
+scrub(t, 0.5); // Sets animations to 50% playback</code></pre>
         </div>
         <footer class="shell-footer desktop-only">
           <p><code>view-transitions-toolkit</code> is a a Chrome DevRel Project.<br>

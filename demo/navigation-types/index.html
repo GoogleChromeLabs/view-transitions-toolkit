@@ -54,7 +54,7 @@
             <p>Automatically inject <code>from-&lt;name&gt;</code> and <code>to-&lt;name&gt;</code> View Transition Types based on navigation origin and destination.</p>
             <hr>
             <h3>The Code</h3>
-            <p>The demo uses <code>useAutoTypes</code> with a route map to determine types during navigation:</p>
+            <p>The demo uses <code>useAutoTypes</code> with a route map to determine types during navigation. A route map is a mapping of route names to their corresponding URL patterns. In this demo, we use the following route map:</p>
             <pre><code>const routeMap = {
     "index": "/navigation-types/demo",
     "detail": "/navigation-types/detail/:id",
@@ -62,6 +62,7 @@
 };
 
 useAutoTypes(routeMap);</code></pre>
+            <p>This will set the <code>from-&lt;name&gt;</code> and <code>to-&lt;name&gt;</code> types on the active <code>ViewTransition</code> based on the navigation origin and destination. For example, if you navigate from the index page to a detail page, the <code>from-index</code> and <code>to-detail</code> types will be set on the active <code>ViewTransition</code>.</p>
             <p>In your CSS, you can then target these types using the <code>:active-view-transition-type</code> pseudo-class to style elements conditionally:</p>
             <pre><code>:active-view-transition-type(from-index) .from { background-color: #f0f0f0; }
 :active-view-transition-type(to-index) .to { background-color: #f0f0f0; }

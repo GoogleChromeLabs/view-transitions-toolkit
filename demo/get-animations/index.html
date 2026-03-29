@@ -52,10 +52,10 @@
         </div>
         <div class="shell-explanation">
             <h2>Animations: getAnimations</h2>
-            <p>Demonstrates the <code>getAnimations</code> function from the toolkit to inspect View Transition animations.</p>
+            <p>The <code>getAnimations</code> function from the toolkit is a wrapper around <code>document.getAnimations()</code> that returns only the animations related to View Transitions. You can further filter the animations by providing a <code>view-transition-name</code> and/or a <code>ViewTransitionPart</code>.</p>
             <hr>
             <h3>The Code</h3>
-            <p>The demo triggers a View Transition, randomizes layout, and calls <code>getAnimations</code>:</p>
+            <p>The demo triggers a View Transition, randomizes layout, and calls <code>getAnimations</code> to get the animations of the element with the <code>view-transition-name: box</code>:</p>
             <pre><code>const t = document.startViewTransition(() => {
   randomize();
 });

@@ -14,8 +14,8 @@
   #box-normal {
     view-transition-name: box-normal;
   }
-  #box-flip {
-    view-transition-name: box-flip;
+  #box-optimized {
+    view-transition-name: box-optimized;
   }
 
   #debug {

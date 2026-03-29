@@ -43,13 +43,13 @@ document.body.addEventListener("click", async (e) => {
     });
     await t.ready;
 
-    optimizeGroupAnimations(t, "box-flip");
+    optimizeGroupAnimations(t, "box-optimized");
 
     // Dump the generated keyframes
     const animations = getAnimations(t, "*", ViewTransitionPart.Group);
     const animationKeyframes = {
       regular: animations[0].effect.getKeyframes(),
-      flip: animations[1].effect.getKeyframes(),
+      optimized: animations[1].effect.getKeyframes(),
     };
     document.getElementById("debug").innerText = JSON.stringify(
       animationKeyframes,

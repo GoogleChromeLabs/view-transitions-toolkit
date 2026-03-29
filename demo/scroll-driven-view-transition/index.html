@@ -50,11 +50,11 @@
             </div>
         </div>
         <div class="shell-explanation">
-            <h2>Scroll-Driven</h2>
-            <p>Connect view transitions to scroll animations. Create fluid, progressive scene changes driven by the user's viewport.</p>
+            <h2>Scroll-Driven View Transition</h2>
+            <p>When scrolling the page, the header card will toggle between the large and small state. This is acthieve by starting a View Transition that is immediately paused and then scrubbed based on the scroll position.</p>
             <hr>
             <h3>The Code</h3>
-            <p>The demo starts a View Transition and synchronizes its playback with page scrolling:</p>
+            <p>Between two scroll positions a View Transition is started and, once started, immediately paused and scrubbed based on the scroll position.</p>
             <pre><code>const startViewTransition = async () => {
   document.startViewTransition(() => {
     document.querySelector(".card").classList.toggle("small");
@@ -66,15 +66,18 @@
 const updateAnimations = () => {
   scrub(document.activeViewTransition, scrollProgress);
 };</code></pre>
+            <p>When scrolling back the animations need to play in reverse. This is achieved by reversing the animations and scrubbing from 1 to 0.</p>
+            <pre><code>if (isReverse) {
+              for (const anim of getAnimations(document.activeViewTransition)) {
+                anim.reverse();
+              }
+            }</code></pre>
             <hr>
             <h3>Functions Used</h3>
             <p>This demo uses <code>trackActiveViewTransition</code>, <code>getAnimations</code>, and utilities like <code>pause</code> / <code>scrub</code> to synchronize a View Transition with scroll state:</p>
             <pre><code>import { trackActiveViewTransition } from "view-transitions-toolkit/track-active-view-transition";
-import { pause, scrub } from "view-transitions-toolkit/playback-control";
-
-trackActiveViewTransition();
-pause(document.activeViewTransition);
-scrub(document.activeViewTransition, scrollProgress);</code></pre>
+import { getAnimations } from "view-transitions-toolkit/animations";
+import { pause, scrub } from "view-transitions-toolkit/playback-control";</code></pre>
         </div>
         <footer class="shell-footer desktop-only">
             <p><code>view-transitions-toolkit</code> is a a Chrome DevRel Project.<br>
