@@ -9,23 +9,26 @@ import {
   extractGeometry,
 } from "../js/animations.js";
 
-const positions = ["start", "end", "center"];
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
+function randomBetween(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function setRandomAlignments() {
-  document.body.style.alignContent = positions[getRandomInt(3)];
-  document.body.style.justifyContent = positions[getRandomInt(3)];
+function moveTo(x, y) {
+  const box = document.querySelector(".box");
+  box.style.left = `${x}px`;
+  box.style.top = `${y}px`;
+
+  const newSize = `${randomBetween(10, 20)}vmin`;
+  box.style.inlineSize = newSize;
+  box.style.blockSize = newSize;
 }
 
 document.body.addEventListener("click", async (e) => {
   if (!document.startViewTransition) {
-    setRandomAlignments();
+    moveTo(e.clientX, e.clientY);
   } else {
     const t = document.startViewTransition(() => {
-      setRandomAlignments();
+      moveTo(e.clientX, e.clientY);
     });
 
     await t.ready;

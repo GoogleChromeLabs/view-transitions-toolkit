@@ -1,18 +1,17 @@
 import { getAnimations } from "../js/animations.js";
 
-const positions = ["start", "end", "center"];
-
 function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function randomize() {
-  document.body.style.alignContent = positions[randomBetween(0, 2)];
-  document.body.style.justifyContent = positions[randomBetween(0, 2)];
+function moveTo(x, y) {
+  const box = document.querySelector(".box");
+  box.style.left = `${x}px`;
+  box.style.top = `${y}px`;
 
   const newSize = `${randomBetween(10, 20)}vmin`;
-  document.querySelector(".box").style.inlineSize = newSize;
-  document.querySelector(".box").style.blockSize = newSize;
+  box.style.inlineSize = newSize;
+  box.style.blockSize = newSize;
 }
 
 // Converts an array to an object with the specified key
@@ -25,10 +24,10 @@ const toObject = (arr, key, mapper = (item) => item) => {
 
 document.body.addEventListener("click", async (e) => {
   if (!document.startViewTransition) {
-    randomize();
+    moveTo(e.clientX, e.clientY);
   } else {
     const t = document.startViewTransition(() => {
-      randomize();
+      moveTo(e.clientX, e.clientY);
     });
 
     await t.ready;
