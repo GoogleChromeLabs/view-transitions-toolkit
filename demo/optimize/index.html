@@ -54,7 +54,7 @@
             <p>Optimize <code>::view-transition-group</code> animations using performant <code>transform</code>-based animations instead of <code>width</code> and <code>height</code> changes.</p>
             <hr>
             <h3>The Code</h3>
-            <p>When you click the page, the demo triggers a View Transition and optimizes the "box-optimized" group. This optimized animation is a transform-based animation that animates the <code>scale</code> property instead of <code>width</code> and <code>height</code>.</p>
+            <p>When you click the page, the demo triggers a View Transition and optimizes the "box-optimized" group. This optimized animation is a transform-based animation that animates the <code>scale</code> property instead of <code>width</code> and <code>height</code>. The "box-normal" group animation is not optimized.</p>
             <pre><code>document.body.addEventListener("click", async (e) => {
   const t = document.startViewTransition(() => {
     mutateTheDOM();
@@ -62,7 +62,8 @@
   await t.ready;
 optimizeGroupAnimations(t, "box-optimized");
 });</code></pre>
-            <p>Because this optimized animation runs on the compositor, it will not be subject to jank, unlike the default <code>width</code>/<code>height</code> animations.</p>
+            <p>In addition to optimizing the <code>box-optimized</code> group, the code also artificially blocks the main thread while the View Transition is still running.</p>
+            <p>Because the optimized animation runs on the compositor, it will not be subject to jank, unlike the default <code>width</code>/<code>height</code> animations.</p>
             <hr>
             <h3>Functions Used</h3>
             <p>This demo uses <code>optimize<wbr>Group<wbr>Animations</code> to replace width/height animations with performant transform-based animations:</p>

@@ -10,19 +10,6 @@ import {
 } from "../js/animations.js";
 
 // Add intermittent Jank to the page
-setInterval(() => {
-  const start = performance.now();
-  document.documentElement.classList.add("jank");
-  document.documentElement.offsetHeight;
-
-  setTimeout(() => {
-    while (start + 1000 > performance.now()) {
-      window.a = performance.now();
-    }
-
-    document.documentElement.classList.remove("jank");
-  }, 100);
-}, 5000);
 
 // Helper functions and vars, supporting the VT
 function mutateTheDOM() {
@@ -56,5 +43,22 @@ document.body.addEventListener("click", async (e) => {
       null,
       4,
     );
+
+    // Add artificial jank after a random delay
+    const delay = Math.floor(Math.random() * 500) + 100;
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        document.documentElement.classList.add("jank");
+        document.documentElement.offsetHeight;
+
+        requestAnimationFrame(() => {
+          const start = performance.now();
+          while (start + 1000 > performance.now()) {
+            window.a = performance.now();
+          }
+          document.documentElement.classList.remove("jank");
+        });
+      });
+    }, delay);
   }
 });
