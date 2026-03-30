@@ -127,6 +127,8 @@
 	::view-transition-new(title),
 	::view-transition-new(moremeta) {
 		animation-name: none;
+		object-fit: none;
+		height: 100%;
 	}
 	::view-transition-old(title),
 	::view-transition-old(moremeta) {
