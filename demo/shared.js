@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentIndex = 0;
     let isUserNav = true;
 
-    btnBack.disabled = true;
+    btnBack.disabled = false;
     btnForward.disabled = true;
 
     btnBack.addEventListener("click", () => {
@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
         isUserNav = false;
         currentIndex--;
         iframe.contentWindow.history.back();
+      } else {
+        window.location.href = "../";
       }
     });
 
@@ -91,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       navUrl.innerText = displayPath;
 
-      btnBack.disabled = currentIndex <= 0;
+      btnBack.disabled = false;
       btnForward.disabled = currentIndex >= historyStack.length - 1;
     });
   }
