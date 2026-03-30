@@ -2,14 +2,14 @@ import { supports } from "../js/feature-detection.js";
 
 const labels = {
   sameDocument:
-    "Same-Document View Transitions (<code>document.startViewTransition</code>)",
+    "Same-Document View Transitions (<code>document.start<wbr>View<wbr>Transition</code>)",
   types: "View Transition Types (<code>transition.types</code>)",
   crossDocument:
     "Cross-Document View Transitions (<code>@view-transition</code> rule)",
   elementScoped:
-    "Element-Scoped View Transitions (<code>Element.startViewTransition</code>)",
+    "Element-Scoped View Transitions (<code>Element.start<wbr>View<wbr>Transition</code>)",
   activeViewTransition:
-    "Active View Transition tracking (<code>document.activeViewTransition</code>)",
+    "Active View Transition tracking (<code>document.active<wbr>View<wbr>Transition</code>)",
 };
 
 const statusLights = document.getElementById("status-lights");
