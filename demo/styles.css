@@ -58,6 +58,11 @@ body {
   position: relative;
 }
 
+main {
+  width: fit-content;
+  max-width: 100%;
+}
+
 /* Background Animated Glows */
 body::before, body::after {
   content: '';
@@ -182,7 +187,6 @@ h1 {
   font-size: 1rem;
   color: var(--text-color);
   width: auto;
-  min-width: 320px;
   max-width: fit-content;
   position: relative;
 }

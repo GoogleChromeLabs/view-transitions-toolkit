@@ -52,10 +52,10 @@
         </div>
         <div class="shell-explanation">
             <h2>Animations: getAnimations</h2>
-            <p>The <code>getAnimations</code> function from the toolkit is a wrapper around <code>document.getAnimations()</code> that returns only the animations related to View Transitions. You can further filter the animations by providing a <code>view-transition-name</code> and/or a <code>ViewTransitionPart</code>.</p>
+            <p>The <code>get<wbr>Animations</code> function from the toolkit is a wrapper around document.getAnimations() that returns only the animations related to View Transitions. You can further filter the animations by providing a <code>view-transition-name</code> and/or a <code>View<wbr>Transition<wbr>Part</code>.</p>
             <hr>
             <h3>The Code</h3>
-            <p>The demo triggers a View Transition, randomizes layout, and calls <code>getAnimations</code> to get the animations of the element with the <code>view-transition-name: box</code>:</p>
+            <p>The demo triggers a View Transition, randomizes layout, and calls <code>get<wbr>Animations</code> to get the animations of the element with the <code>view-transition-name: box</code>:</p>
             <pre><code>const t = document.startViewTransition(() => {
   randomize();
 });
@@ -65,7 +65,7 @@ await t.ready;
 const animations = getAnimations(t, "box");</code></pre>
             <hr>
             <h3>Functions Used</h3>
-            <p>This demo uses <code>getAnimations</code> to read animation details during a transition:</p>
+            <p>This demo uses <code>get<wbr>Animations</code> to read animation details during a transition:</p>
             <pre><code>import { getAnimations } from "view-transitions-toolkit/animations";</code></pre>
         </div>
         <footer class="shell-footer desktop-only">
