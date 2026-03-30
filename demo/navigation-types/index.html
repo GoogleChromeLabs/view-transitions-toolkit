@@ -62,13 +62,32 @@
 };
 
 useAutoTypes(routeMap);</code></pre>
-            <p>This will set the <code>from-&lt;name&gt;</code> and <code>to-&lt;name&gt;</code> types on the active <code>View<wbr>Transition</code> based on the navigation origin and destination. For example, if you navigate from the index page to a detail page, the <code>from-index</code> and <code>to-detail</code> types will be set on the active <code>View<wbr>Transition</code>.</p>
-            <p>In your CSS, you can then target these types using the <code>:active-view-transition-type</code> pseudo-class to style elements conditionally:</p>
-            <pre><code>:active-view-transition-type(from-index) .from { background-color: #f0f0f0; }
-:active-view-transition-type(to-index) .to { background-color: #f0f0f0; }
+            <p>This will set the <code>from-&lt;name&gt;</code> and <code>to-&lt;name&gt;</code> types on the active <code>View<wbr>Transition</code> based on the navigation origin and destination.</p>
+            <p>For example, if you navigate from the index page to a detail page, the <code>from-index</code> and <code>to-detail</code> types will be set on the active <code>View<wbr>Transition</code>.</p>
+            <p>In the demo's CSS, we use the <code>:active-view-transition-type</code> pseudo-class to style elements conditionally. For example, when going between the index and about pages, we do a sliding animation</p>
+            <pre><code>:active-view-transition-type(from-index):active-view-transition-type(to-about) {
+    &amp;::view-transition-group(*) { animation-duration: 0.5s; }
 
-:active-view-transition-type(from-detail) .from { background-color: #e0f0ff; }
-:active-view-transition-type(to-detail) .to { background-color: #e0f0ff; }</code></pre>
+    &amp;::view-transition-new(root) {
+        animation-name: slide-from-right;
+    }
+    &amp;::view-transition-old(root) {
+        animation-name: slide-to-left;
+    }
+}</code></pre>
+            <p>But when navigating between the index page and a detail page, we capture the images as part of the view transition</p>
+            <pre><code>:active-view-transition-type(from-detail):active-view-transition-type(to-index),
+:active-view-transition-type(from-index):active-view-transition-type(to-detail) {
+    .monster-detail img {
+        view-transition-name: attr(id type(<custom-ident>), none);
+        view-transition-class: photo;
+    }
+
+    .monster-overview img {
+        view-transition-name: attr(id type(<custom-ident>), none);
+        view-transition-class: photo;
+    }
+}</code></pre>
             <hr>
             <h3>Functions Used</h3>
             <p>This demo uses <code>use<wbr>Auto<wbr>Types</code> to automatically set types on the active <code>View<wbr>Transition</code> based on the navigation origin and destination:</p>
