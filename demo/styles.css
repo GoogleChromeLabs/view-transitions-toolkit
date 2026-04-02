@@ -59,8 +59,8 @@ body {
 }
 
 main {
-  width: fit-content;
-  max-width: 100%;
+  width: 100%;
+  max-width: 65rem;
 }
 
 /* Background Animated Glows */
@@ -173,7 +173,7 @@ html[data-theme="system"] .h1-logo-icon {
   margin: 0 auto;
 }
 
-.toolkit-overview {
+section {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 20px;
@@ -184,7 +184,17 @@ html[data-theme="system"] .h1-logo-icon {
   width: 100%;
 }
 
-.toolkit-overview h2 {
+section :is(p, ul, ol) {
+  margin: 1rem 0;
+  &:first-child {
+    margin-top: 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+section h2 {
   font-size: 1.75rem;
   margin-bottom: 1rem;
   font-weight: 700;
@@ -194,7 +204,6 @@ html[data-theme="system"] .h1-logo-icon {
 .toolkit-list {
   list-style-type: none;
   padding: 0;
-  margin: 1rem 0;
 }
 
 .toolkit-list li {
@@ -214,13 +223,14 @@ html[data-theme="system"] .h1-logo-icon {
   flex-shrink: 0;
 }
 
-.toolkit-list a {
+section a {
   color: var(--accent-color);
   text-decoration: none;
   font-weight: 600;
 }
 
-.toolkit-list a:hover {
+section a:hover,
+section a:focus-visible {
   text-decoration: underline;
 }
 
@@ -241,9 +251,9 @@ html[data-theme="system"] .h1-logo-icon {
   font-family: monospace;
   font-size: 1rem;
   color: var(--text-color);
-  width: auto;
-  max-width: fit-content;
+  width: 100%;
   position: relative;
+  margin: 1rem 0;
 }
 
 [data-theme="light"] .install-box {
