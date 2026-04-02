@@ -2,6 +2,11 @@
 
 A collection of utility functions to more easily work with View Transitions
 
+[![npm version](https://img.shields.io/npm/v/view-transitions-toolkit)](https://npmjs.com/package/view-transitions-toolkit)
+[![Repository](https://img.shields.io/badge/repo-GitHub-2a2a2a)](https://github.com/GoogleChromeLabs/view-transitions-toolkit)
+[![License](https://img.shields.io/npm/l/view-transitions-toolkit)](https://github.com/GoogleChromeLabs/view-transitions-toolkit/blob/main/LICENSE)
+[![demo](https://img.shields.io/badge/demo-chrome.dev-1a73e9)](https://chrome.dev/view-transitions-toolkit/)
+
 ## Installation
 
 ```bash
@@ -21,10 +26,14 @@ The Toolkit consists of several modules, each providing a set of utility functio
 
 ## Demos
 
-Demos are included in this repository. Run `npm run start` and visit `http://127.0.0.1:3000/` to see the demos.
+Try the demos online over at [https://chrome.dev/view-transitions-toolkit/](https://chrome.dev/view-transitions-toolkit/).
+
+The source of the demos is included in the repository.
+
+To run them locally, run `npm start` and visit `http://localhost:3000/`.
 
 ```bash
-npm run dev
+npm start
 ```
 
 ## License
