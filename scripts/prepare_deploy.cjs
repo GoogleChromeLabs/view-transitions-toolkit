@@ -52,6 +52,18 @@ function processFiles(dir) {
     } else if (entry.isFile() && (entry.name.endsWith('.js') || entry.name.endsWith('.html'))) {
       let content = fs.readFileSync(fullPath, 'utf8');
 
+      if (entry.name === 'index.html') {
+        const gaSnippet = `<script async src="https://www.googletagmanager.com/gtag/js?id=G-754F24EHD8" fetchpriority="low"></script> <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-754F24EHD8");
+</script>`;
+        content = content.replace('</body>', `${gaSnippet}\n</body>`);
+      }
+
       // Replace patterns: "../js/animations.js" or "../../js/navigation.js" etc.
       // This matches both single and double quotes, and allows dots for relative path (../js/ or ../../js/ or js/)
       content = content.replace(/(['"])(?:\.{1,2}\/)+js\/([a-zA-Z0-9_-]+)\.js\1/g, (match, quote, filename) => {
