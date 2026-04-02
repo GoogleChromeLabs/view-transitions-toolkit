@@ -29,8 +29,8 @@ test.describe("Navigation Types", () => {
       "WebKit 18 does not like this test",
     );
 
-    // Go to the demo home page
-    await page.goto("http://localhost:7357/demo/navigation-types/");
+    // Go to the test’s home page
+    await page.goto("http://localhost:7357/tests/navigation-types/");
 
     // Clear localStorage before navigation
     await page.evaluate(() => {
@@ -39,10 +39,10 @@ test.describe("Navigation Types", () => {
     });
 
     // Click 'Detail 1'
-    await page.locator('a[href="./detail/1"]').click();
+    await page.locator('a[href="/tests/navigation-types/detail/1"]').click();
 
     // Wait for the navigation to complete
-    await page.waitForURL("**/demo/navigation-types/detail/1");
+    await page.waitForURL("**/tests/navigation-types/detail/1");
 
     // Read results from localStorage
     const pageswapResult = await page.evaluate(() => {
@@ -77,10 +77,10 @@ test.describe("Navigation Types", () => {
     });
 
     // Click 'Home' via relative link
-    await page.locator('a[href="../"]').click();
+    await page.locator('a[href="/tests/navigation-types/"]').click();
 
     // Wait for the navigation to complete
-    await page.waitForURL("**/demo/navigation-types/");
+    await page.waitForURL("**/tests/navigation-types/");
 
     // Read results from localStorage
     const nextPageswapResult = await page.evaluate(() => {
