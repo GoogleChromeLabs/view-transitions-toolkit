@@ -1,5 +1,7 @@
 # Transition Playback Control
 
+[View Demo](https://chrome.dev/view-transitions-toolkit/playback-control/)
+
 Control the playback of a View Transition
 
 ```js

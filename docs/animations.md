@@ -4,6 +4,8 @@ This section covers utilities for extracting, measuring, and optimizing animatio
 
 ## Extract Animations
 
+[View Demo](https://chrome.dev/view-transitions-toolkit/get-animations/)
+
 Get the animations linked to a View Transition
 
 - Get all animations:
@@ -78,6 +80,8 @@ Get the animations linked to a View Transition
 
 ## Measuring Tools
 
+[View Demo](https://chrome.dev/view-transitions-toolkit/measure/)
+
 ```js
 import { getAnimations, ViewTransitionPart, extractGeometry } from "view-transitions-toolkit/animations";
 
@@ -108,6 +112,8 @@ console.log(boxGroupGeometry);
 ```
 
 ## Animation Optimization
+
+[View Demo](https://chrome.dev/view-transitions-toolkit/optimize/)
 
 The Animation Optimization feature allows you to change the underlying animations of a View Transition's `::view-transition-group` pseudo-elements. Instead of animating `width` and `height`, this utility function will animate the element's `transform` instead to achieve the same visual effect. This is a more performant way to handle size+position changes in View Transitions.
 

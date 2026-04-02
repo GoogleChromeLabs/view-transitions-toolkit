@@ -1,5 +1,7 @@
 # Automatic Page Navigation Types
 
+[View Demo](https://chrome.dev/view-transitions-toolkit/navigation-types/)
+
 To automatically set `from-<name>` and `to-<name>` types on the active `ViewTransition` based on the navigation origin and destination, you can use the `useAutoTypes` utility.
 
 This utility listens for `pageswap` and `pagereveal` events and uses a `routeMap` to determine the route names.

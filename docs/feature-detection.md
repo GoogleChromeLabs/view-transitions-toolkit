@@ -1,5 +1,7 @@
 # Feature Detection
 
+[View Demo](https://chrome.dev/view-transitions-toolkit/feature-detection/)
+
 Get information about whether certain View Transitions subfeatures are supported or not.
 
 ```js

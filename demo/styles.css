@@ -637,6 +637,17 @@ html[data-theme="light"] body::after {
   line-height: 1.6;
 }
 
+.shell-explanation a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.shell-explanation a:hover,
+.shell-explanation a:focus-visible {
+  text-decoration: underline;
+}
+
 /* Code Blocks Styling */
 pre {
   background: var(--card-bg) !important;
